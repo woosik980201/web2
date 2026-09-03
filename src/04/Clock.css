@@ -1,0 +1,355 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+
+/* =========================
+   전체 페이지
+========================= */
+
+.archive-page {
+    width: 100%;
+    height: 100vh;
+
+    position: relative;
+    overflow: hidden;
+
+    background:
+            radial-gradient(
+                    circle at 70% 30%,
+                    rgba(255, 120, 70, 0.08),
+                    transparent 35%
+            ),
+            linear-gradient(
+                    135deg,
+                    #111111 0%,
+                    #171717 45%,
+                    #0c0c0c 100%
+            );
+
+    color: #f2f0e8;
+
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* =========================
+   상단 바
+========================= */
+
+.top-bar {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 70px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 40px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+
+.brand {
+    font-size: 13px;
+
+    font-weight: 700;
+
+    letter-spacing: 2.5px;
+}
+
+
+.top-info {
+    display: flex;
+
+    gap: 28px;
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    color: rgba(255, 255, 255, 0.55);
+}
+
+
+/* =========================
+   왼쪽 메뉴
+========================= */
+
+.left-panel {
+    position: absolute;
+
+    top: 70px;
+    bottom: 45px;
+
+    left: 0;
+
+    width: 80px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 35px;
+
+    padding-top: 40px;
+
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    color: rgba(255, 255, 255, 0.45);
+}
+
+
+.left-panel span:not(:first-child) {
+    writing-mode: vertical-rl;
+
+    transform: rotate(180deg);
+}
+
+
+/* =========================
+   메인
+========================= */
+
+.main-content {
+    position: absolute;
+
+    top: 70px;
+    bottom: 45px;
+
+    left: 80px;
+    right: 0;
+
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.section-label {
+    width: 650px;
+
+    margin-bottom: 15px;
+
+    font-size: 9px;
+
+    letter-spacing: 3px;
+
+    color: rgba(255, 255, 255, 0.45);
+}
+
+
+/* =========================
+   CLOCK FRAME
+========================= */
+
+.clock-frame {
+    width: 650px;
+    height: 340px;
+
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+
+    background:
+            linear-gradient(
+                    145deg,
+                    rgba(255, 255, 255, 0.08),
+                    rgba(255, 255, 255, 0.01)
+            );
+
+    backdrop-filter: blur(12px);
+
+    box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            0 40px 80px rgba(0, 0, 0, 0.55);
+
+    transition: 0.35s ease;
+}
+
+
+.clock-frame:hover {
+    transform: scale(1.015);
+
+    border-color: rgba(255, 190, 120, 0.55);
+
+    box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            0 45px 90px rgba(0, 0, 0, 0.7);
+}
+
+
+/* =========================
+   시간
+========================= */
+
+.clock-number {
+    font-size: 150px;
+
+    font-weight: 700;
+
+    letter-spacing: -12px;
+
+    color: #f3ead9;
+
+    text-shadow:
+            0 0 15px rgba(255, 190, 120, 0.15),
+            8px 10px 30px rgba(0, 0, 0, 0.7);
+}
+
+
+/* 초 */
+.clock-second {
+    position: absolute;
+
+    right: 35px;
+    top: 35px;
+
+    font-size: 14px;
+
+    letter-spacing: 2px;
+
+    color: #ff875c;
+}
+
+
+/* LIVE 표시 */
+.live-indicator {
+    position: absolute;
+
+    bottom: 25px;
+    right: 30px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    color: rgba(255, 255, 255, 0.6);
+}
+
+
+.live-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #ff5c38;
+
+    box-shadow:
+            0 0 10px rgba(255, 92, 56, 0.8);
+}
+
+
+/* =========================
+   하단 메타정보
+========================= */
+
+.meta-row {
+    width: 650px;
+
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: 15px;
+
+    padding-top: 12px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    color: rgba(255, 255, 255, 0.4);
+}
+
+
+/* =========================
+   하단 바
+========================= */
+
+.bottom-bar {
+    position: absolute;
+
+    bottom: 0;
+    left: 80px;
+    right: 0;
+
+    height: 45px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 40px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    color: rgba(255, 255, 255, 0.4);
+}
+
+
+/* =========================
+   모바일
+========================= */
+
+@media (max-width: 750px) {
+
+    .left-panel {
+        display: none;
+    }
+
+    .top-info span:nth-child(2) {
+        display: none;
+    }
+
+    .section-label,
+    .clock-frame,
+    .meta-row {
+        width: 85vw;
+    }
+
+    .clock-frame {
+        height: 260px;
+    }
+
+    .clock-number {
+        font-size: 95px;
+
+        letter-spacing: -8px;
+    }
+
+    .bottom-bar {
+        left: 0;
+    }
+}
