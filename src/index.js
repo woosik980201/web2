@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import Library from './03/Library';
+import Library from './03/enhanced_css/Library';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

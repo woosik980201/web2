@@ -1,0 +1,212 @@
+/* 모든 요소의 실제 크기에 padding 포함 */
+* {
+    box-sizing: border-box;
+}
+
+
+/* =========================
+   전체 페이지
+========================= */
+
+.library {
+    min-height: 100vh;
+
+    padding: 40px 6% 80px;
+
+    background-color: #f1f0eb;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.library-header {
+    margin-bottom: 70px;
+    padding-bottom: 28px;
+
+    border-bottom: 1px solid #111;
+}
+
+
+.library-header p {
+    margin: 0 0 15px;
+
+    font-size: 11px;
+    font-weight: 500;
+
+    letter-spacing: 2px;
+
+    color: #111;
+}
+
+
+.library-header h1 {
+    margin: 0;
+
+    font-size: 46px;
+    font-weight: 900;
+
+    letter-spacing: -2px;
+
+    color: #111;
+}
+
+
+/* =========================
+   BOOK GRID
+========================= */
+
+.library-container {
+    display: grid;
+
+    grid-template-columns: repeat(3, 230px);
+
+    justify-content: center;
+
+    gap: 50px 35px;
+}
+
+
+/* =========================
+   BOOK CARD
+========================= */
+
+.book-card {
+    width: 230px;
+
+    padding: 12px;
+
+    background-color: #faf9f6;
+
+    border: 1px solid #d6d4cd;
+
+    cursor: pointer;
+
+    transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease;
+}
+
+
+/* =========================
+   BOOK IMAGE
+========================= */
+
+.book-cover {
+    display: block;
+
+    width: 100%;
+    height: 290px;
+
+    object-fit: cover;
+
+    filter: saturate(0.9);
+
+    transition: 0.3s ease;
+}
+
+
+/* =========================
+   BOOK TITLE
+========================= */
+
+.book-card h1 {
+    margin: 18px 0 8px;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    line-height: 1.4;
+
+    letter-spacing: -0.5px;
+
+    color: #111;
+}
+
+
+/* =========================
+   PAGE NUMBER
+========================= */
+
+.book-card h2 {
+    margin: 0;
+
+    font-size: 12px;
+    font-weight: 400;
+
+    color: #777;
+
+    letter-spacing: 0.3px;
+}
+
+
+/* =========================
+   HOVER
+========================= */
+
+.book-card:hover {
+    transform: translate(-5px, -5px);
+
+    box-shadow: 8px 8px 0 #111;
+}
+
+
+.book-card:hover .book-cover {
+    filter: saturate(1.15);
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 850px) {
+
+    .library-container {
+        grid-template-columns: repeat(2, 230px);
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 550px) {
+
+    .library {
+        padding: 30px 20px 60px;
+    }
+
+    .library-header h1 {
+        font-size: 34px;
+    }
+
+    .library-container {
+        grid-template-columns: 1fr;
+
+        justify-items: center;
+    }
+
+    .book-card {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .book-cover {
+        height: 350px;
+    }
+    .book-card:nth-child(4) {
+        margin-left: 80px;
+    }
+    .book-card h1 {
+        text-transform: uppercase;
+        letter-spacing: -0.3px;
+    }
+    .book-card h2 {
+        font-family: monospace;
+        letter-spacing: 1px;
+    }
+}
