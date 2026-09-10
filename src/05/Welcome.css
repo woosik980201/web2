@@ -1,0 +1,29 @@
+.welcome {
+    width: 700px;
+    margin: 5px auto;
+    padding: 20px;
+
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+
+    border-radius: 5px;
+}
+
+/* 첫 번째 */
+.red {
+    background-color: #fde8e8;
+    color: #d9362b;
+}
+
+/* 두 번째 */
+.green {
+    background-color: #e8f5e9;
+    color: #2e914b;
+}
+
+/* 세 번째 */
+.blue {
+    background-color: #e3f2fd;
+    color: #2584c4;
+}
