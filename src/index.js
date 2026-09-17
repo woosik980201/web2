@@ -8,15 +8,18 @@ import ReactDOM from 'react-dom/client';
 //import Clock from './04/Clock';
 //import ConfirmDialog from './04/ConfirmDialog/ConfirmDialog';
 //import ConfirmDialogList from './04/ConfirmDialog/ConfirmDialogList';
-import WelcomeList from './05/WelcomeList'
+//import WelcomeList from './05/WelcomeList'
+//import Booklist from './05/exam02/Booklist';
+//import './05/exam02/Booklist.css';
+import UserinfoList from "./05/exam03/UserinfoList";
 const root = ReactDOM.createRoot(
     document.getElementById('root')
 );
 
-setInterval(() => {
-    root.render(
+//setInterval(() => {
+   root.render(
         <React.StrictMode>
-            <WelcomeList />
-        </React.StrictMode>
+            <UserinfoList />
+       </React.StrictMode>
     );
-}, 1000);
+//}, 1000);

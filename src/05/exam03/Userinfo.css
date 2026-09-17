@@ -1,0 +1,371 @@
+/* ================================
+   CYBER PROFILE CARD
+================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+    width: 100%;
+    min-height: 100vh;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    background:
+            radial-gradient(circle at 20% 20%, rgba(0, 217, 255, 0.08), transparent 30%),
+            radial-gradient(circle at 80% 70%, rgba(120, 70, 255, 0.08), transparent 30%),
+            #050b14;
+
+    font-family: Arial, Helvetica, sans-serif;
+    color: #dffaff;
+}
+
+
+/* ================================
+   전체 리스트
+================================ */
+
+.userList {
+    width: min(900px, 90vw);
+
+    margin: 0 auto;
+    padding: 60px 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+
+/* ================================
+   사용자 카드
+================================ */
+
+.userCard {
+    position: relative;
+
+    width: 100%;
+    min-height: 210px;
+
+    padding: 28px 45px 25px 210px;
+
+    background:
+            linear-gradient(
+                    120deg,
+                    rgba(7, 25, 42, 0.96),
+                    rgba(4, 13, 28, 0.92)
+            );
+
+    border: 1px solid #00d9ff;
+    border-radius: 8px;
+
+    box-shadow:
+            0 0 8px rgba(0, 217, 255, 0.35),
+            inset 0 0 25px rgba(0, 217, 255, 0.04);
+
+    overflow: hidden;
+
+    transition: 0.3s ease;
+}
+
+
+/* 카드 위쪽 사이버 라인 */
+
+.userCard::before {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    left: 40px;
+
+    width: 180px;
+    height: 4px;
+
+    background: #00d9ff;
+
+    box-shadow:
+            0 0 8px #00d9ff,
+            0 0 18px rgba(0, 217, 255, 0.7);
+}
+
+
+/* 오른쪽 HUD 장식 */
+
+.userCard::after {
+    content: "SYSTEM / ONLINE";
+
+    position: absolute;
+    top: 25px;
+    right: 28px;
+
+    font-size: 9px;
+    letter-spacing: 2px;
+
+    color: rgba(0, 217, 255, 0.65);
+}
+
+
+/* 카드 hover */
+
+.userCard:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+            0 0 15px rgba(0, 217, 255, 0.6),
+            0 0 40px rgba(0, 217, 255, 0.12),
+            inset 0 0 30px rgba(0, 217, 255, 0.06);
+}
+
+
+/* ================================
+   프로필 정보
+================================ */
+
+.userInfo {
+    display: flex;
+    align-items: center;
+
+    min-height: 75px;
+}
+
+
+/* ================================
+   프로필 이미지
+================================ */
+
+.avatar {
+    position: absolute;
+
+    left: 45px;
+    top: 38px;
+
+    width: 115px;
+    height: 115px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 3px solid #00d9ff;
+
+    padding: 4px;
+
+    background-color: #071522;
+
+    box-shadow:
+            0 0 8px #00d9ff,
+            0 0 25px rgba(0, 217, 255, 0.5);
+}
+
+
+/* ================================
+   이름
+================================ */
+
+.userName {
+    position: relative;
+
+    font-size: 28px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    color: #dffaff;
+
+    text-shadow:
+            0 0 8px rgba(0, 217, 255, 0.4);
+}
+
+
+/* 이름 위 USER 표시 */
+
+.userName::before {
+    content: "USER_PROFILE";
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 9px;
+    font-weight: normal;
+
+    letter-spacing: 3px;
+
+    color: #00d9ff;
+}
+
+
+/* ================================
+   COMMENT
+================================ */
+
+.comment {
+    margin-top: 8px;
+
+    padding-bottom: 18px;
+
+    border-bottom: 1px solid rgba(0, 217, 255, 0.35);
+
+    font-size: 15px;
+
+    letter-spacing: 0.5px;
+
+    color: #a9c9d3;
+}
+
+
+/* ================================
+   DATE
+================================ */
+
+.date {
+    position: relative;
+
+    margin-top: 14px;
+
+    padding-left: 22px;
+
+    font-size: 11px;
+
+    letter-spacing: 1.5px;
+
+    color: #6f9eac;
+}
+
+
+/* 날짜 앞 작은 네온 점 */
+
+.date::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 3px;
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background-color: #00ffcc;
+
+    box-shadow:
+            0 0 5px #00ffcc,
+            0 0 12px #00ffcc;
+}
+
+
+/* ================================
+   카드별 다른 네온 컬러
+================================ */
+
+
+/* 1번 : CYAN */
+
+.userCard:nth-child(1) {
+    border-color: #00d9ff;
+}
+
+
+/* 2번 : MAGENTA */
+
+.userCard:nth-child(2) {
+    border-color: #ff42df;
+
+    box-shadow:
+            0 0 8px rgba(255, 66, 223, 0.35),
+            inset 0 0 25px rgba(255, 66, 223, 0.04);
+}
+
+.userCard:nth-child(2)::before {
+    background: #ff42df;
+
+    box-shadow:
+            0 0 8px #ff42df,
+            0 0 18px rgba(255, 66, 223, 0.7);
+}
+
+.userCard:nth-child(2)::after {
+    color: #ff42df;
+}
+
+.userCard:nth-child(2) .avatar {
+    border-color: #ff42df;
+
+    box-shadow:
+            0 0 8px #ff42df,
+            0 0 25px rgba(255, 66, 223, 0.5);
+}
+
+.userCard:nth-child(2) .userName::before {
+    color: #ff42df;
+}
+
+
+/* 3번 : PURPLE */
+
+.userCard:nth-child(3) {
+    border-color: #865cff;
+
+    box-shadow:
+            0 0 8px rgba(134, 92, 255, 0.4),
+            inset 0 0 25px rgba(134, 92, 255, 0.05);
+}
+
+.userCard:nth-child(3)::before {
+    background: #865cff;
+
+    box-shadow:
+            0 0 8px #865cff,
+            0 0 18px rgba(134, 92, 255, 0.7);
+}
+
+.userCard:nth-child(3)::after {
+    color: #a58cff;
+}
+
+.userCard:nth-child(3) .avatar {
+    border-color: #865cff;
+
+    box-shadow:
+            0 0 8px #865cff,
+            0 0 25px rgba(134, 92, 255, 0.5);
+}
+
+.userCard:nth-child(3) .userName::before {
+    color: #a58cff;
+}
+
+
+/* ================================
+   반응형
+================================ */
+
+@media (max-width: 900px) {
+
+    .userList {
+        width: 90vw;
+    }
+
+    .userCard {
+        padding-left: 170px;
+    }
+
+    .avatar {
+        left: 30px;
+
+        width: 105px;
+        height: 105px;
+    }
+
+    .userName {
+        font-size: 23px;
+    }
+}
