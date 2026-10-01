@@ -11,7 +11,9 @@ import ReactDOM from 'react-dom/client';
 //import WelcomeList from './05/WelcomeList'
 //import Booklist from './05/exam02/Booklist';
 //import './05/exam02/Booklist.css';
-import UserinfoList from "./05/exam03/UserinfoList";
+//import UserinfoList from "./05/exam03/UserinfoList";
+//import TodoList from './01/TodoApp';
+import NotificationList from './06/NotificationList';
 const root = ReactDOM.createRoot(
     document.getElementById('root')
 );
@@ -19,7 +21,7 @@ const root = ReactDOM.createRoot(
 //setInterval(() => {
    root.render(
         <React.StrictMode>
-            <UserinfoList />
+            <NotificationList />
        </React.StrictMode>
     );
 //}, 1000);
