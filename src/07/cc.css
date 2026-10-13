@@ -1,0 +1,117 @@
+/* ===== Accommodate: 매장 입장 카운터 스타일 ===== */
+
+.accommodate {
+    --ink: #1a1a1a;
+    --paper: #fafaf7;
+    --line: #e2e0d8;
+    --muted: #8a877d;
+    --accent: #1a1a1a;
+    --alert: #c8402f;
+
+    max-width: 360px;
+    margin: 48px auto;
+    padding: 32px 28px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    color: var(--ink);
+    font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    text-align: center;
+    transition: border-color 0.3s;
+}
+
+/* 정원이 찼을 때: 강조색을 경고색으로 교체 */
+.accommodate--full {
+    --accent: var(--alert);
+    border-color: var(--alert);
+}
+
+.accommodate__label {
+    margin: 0;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+}
+
+.accommodate__count {
+    margin: 8px 0 4px;
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums; /* 숫자가 바뀌어도 폭이 흔들리지 않게 */
+    transition: color 0.3s;
+}
+
+.accommodate__max {
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--muted);
+}
+
+.accommodate__text {
+    margin: 0 0 20px;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+/* 수용 인원 게이지 */
+.accommodate__gauge {
+    height: 6px;
+    margin-bottom: 24px;
+    background: var(--line);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.accommodate__gauge-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 999px;
+    transition: width 0.3s ease, background-color 0.3s;
+}
+
+.accommodate__buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.accommodate__btn {
+    flex: 1;
+    padding: 12px 0;
+    font: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--ink);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, transform 0.1s;
+}
+
+.accommodate__btn:hover {
+    background: var(--ink);
+    color: var(--paper);
+}
+
+.accommodate__btn:active {
+    transform: scale(0.97);
+}
+
+.accommodate__btn--in {
+    background: var(--ink);
+    color: var(--paper);
+}
+
+.accommodate__btn--in:hover {
+    opacity: 0.85;
+}
+
+.accommodate__notice {
+    margin: 20px 0 0;
+    padding: 10px;
+    font-size: 14px;
+    color: var(--alert);
+    background: rgba(200, 64, 47, 0.08);
+    border-radius: 8px;
+}

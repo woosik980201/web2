@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function Counter(props) {
+function UseEffectTest() {
     const [count, setCount] = useState(0);
 
     // componentDidMount, componentDidUpdate와 비슷하게 작동합니다.
@@ -19,4 +19,4 @@ function Counter(props) {
     );
 }
 
-export default Counter;
+export default UseEffectTest;
