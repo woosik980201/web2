@@ -13,7 +13,14 @@ import ReactDOM from 'react-dom/client';
 //import './05/exam02/Booklist.css';
 //import UserinfoList from "./05/exam03/UserinfoList";
 //import TodoList from './01/TodoApp';
-import NotificationList from './06/NotificationList';
+//import NotificationList from './06/NotificationList';
+
+// 07: Hooks
+import UseStateTest from './07/UseStateTest';
+import UseEffectTest from './07/UseEffectTest';
+import TextInputWithFocusButton from './07/TextInputWithFocusButton';
+import Accommodate from './07/Accommodate';
+
 const root = ReactDOM.createRoot(
     document.getElementById('root')
 );
@@ -21,7 +28,13 @@ const root = ReactDOM.createRoot(
 //setInterval(() => {
    root.render(
         <React.StrictMode>
-            <NotificationList />
+            <UseStateTest />
+            <hr />
+            <UseEffectTest />
+            <hr />
+            <TextInputWithFocusButton />
+            <hr />
+            <Accommodate />
        </React.StrictMode>
     );
 //}, 1000);
