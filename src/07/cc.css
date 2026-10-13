@@ -89,12 +89,12 @@
     transition: background-color 0.2s, color 0.2s, transform 0.1s;
 }
 
-.accommodate__btn:hover {
+.accommodate__btn:hover:not(:disabled) {
     background: var(--ink);
     color: var(--paper);
 }
 
-.accommodate__btn:active {
+.accommodate__btn:active:not(:disabled) {
     transform: scale(0.97);
 }
 
@@ -103,8 +103,14 @@
     color: var(--paper);
 }
 
-.accommodate__btn--in:hover {
+.accommodate__btn--in:hover:not(:disabled) {
     opacity: 0.85;
+}
+
+/* 누를 수 없는 상태: 정원 초과 시 입장, 0명일 때 퇴장 */
+.accommodate__btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
 }
 
 .accommodate__notice {

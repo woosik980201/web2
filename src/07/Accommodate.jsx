@@ -35,10 +35,18 @@ function Accommodate() {
             </div>
 
             <div className="accommodate__buttons">
-                <button className="accommodate__btn accommodate__btn--in" onClick={increaseCount}>
+                <button
+                    className="accommodate__btn accommodate__btn--in"
+                    onClick={increaseCount}
+                    disabled={isFull}
+                >
                     수용시설에 입장
                 </button>
-                <button className="accommodate__btn" onClick={decreaseCount}>
+                <button
+                    className="accommodate__btn"
+                    onClick={decreaseCount}
+                    disabled={count === 0}
+                >
                     수용시설에서 퇴장
                 </button>
             </div>
