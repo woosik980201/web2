@@ -16,11 +16,13 @@ import ReactDOM from 'react-dom/client';
 //import NotificationList from './06/NotificationList';
 
 // 07: Hooks
-import UseStateTest from './07/UseStateTest';
-import UseEffectTest from './07/UseEffectTest';
-import TextInputWithFocusButton from './07/TextInputWithFocusButton';
-import Accommodate from './07/Accommodate';
-
+//import UseStateTest from './07/UseStateTest';
+//import UseEffectTest from './07/UseEffectTest';
+//import TextInputWithFocusButton from './07/TextInputWithFocusButton';
+//import Accommodate from './07/Accommodate';
+//import Toggle from './08/Toggle';
+//import MyButton from './08/MyButton';
+import Toggle2 from'./08/Toggle2';
 const root = ReactDOM.createRoot(
     document.getElementById('root')
 );
@@ -28,13 +30,7 @@ const root = ReactDOM.createRoot(
 //setInterval(() => {
    root.render(
         <React.StrictMode>
-            <UseStateTest />
-            <hr />
-            <UseEffectTest />
-            <hr />
-            <TextInputWithFocusButton />
-            <hr />
-            <Accommodate />
+            <Toggle2 />
        </React.StrictMode>
     );
 //}, 1000);
