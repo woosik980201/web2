@@ -22,7 +22,11 @@ import ReactDOM from 'react-dom/client';
 //import Accommodate from './07/Accommodate';
 //import Toggle from './08/Toggle';
 //import MyButton from './08/MyButton';
-import Toggle2 from'./08/Toggle2';
+//import Toggle2 from'./08/Toggle2';
+//import MyButton2 from'./08/MyButton2';
+//import ConfirmButton from'./08/ConfirmButton';
+//import ConfirmButton2 from'./08/ConfirmButton2';
+import MessageSender from'./08/MessageSender';
 const root = ReactDOM.createRoot(
     document.getElementById('root')
 );
@@ -30,7 +34,7 @@ const root = ReactDOM.createRoot(
 //setInterval(() => {
    root.render(
         <React.StrictMode>
-            <Toggle2 />
+            <MessageSender />
        </React.StrictMode>
     );
 //}, 1000);
