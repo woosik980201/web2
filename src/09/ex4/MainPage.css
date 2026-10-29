@@ -1,0 +1,225 @@
+
+/* ===== MAIN PAGE BACKGROUND ===== */
+
+.main-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    overflow: hidden;
+
+    background: linear-gradient(
+            135deg,
+            #090e1b,
+            #1e1b4b,
+            #312e81,
+            #090e1b
+    );
+
+    background-size: 400% 400%;
+    animation: mainGradient 12s ease infinite;
+    perspective: 1000px;
+}
+
+@keyframes mainGradient {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* ===== 3D GLASS CARD ===== */
+
+.main-card {
+    width: 390px;
+    max-width: 100%;
+    padding: 45px 35px;
+    text-align: center;
+    color: white;
+
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(20px);
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 24px;
+
+    box-shadow:
+            0 25px 70px rgba(0, 0, 0, 0.4),
+            0 0 45px rgba(139, 92, 246, 0.2);
+
+    transform-style: preserve-3d;
+    animation: mainEntrance 0.9s ease-out;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.main-card:hover {
+    transform: rotateY(5deg) rotateX(4deg) translateY(-7px);
+    box-shadow:
+            0 35px 80px rgba(0, 0, 0, 0.5),
+            0 0 60px rgba(139, 92, 246, 0.4);
+}
+
+@keyframes mainEntrance {
+    from {
+        opacity: 0;
+        transform: rotateX(-35deg) translateY(70px);
+    }
+    to {
+        opacity: 1;
+        transform: rotateX(0) translateY(0);
+    }
+}
+
+/* ===== STATUS ICON ===== */
+
+.main-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 25px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 38px;
+    border-radius: 50%;
+
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    box-shadow: 0 0 35px rgba(139, 92, 246, 0.5);
+
+    animation: mainFloat 3s ease-in-out infinite;
+}
+
+@keyframes mainFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.main-icon.active {
+    background: linear-gradient(135deg, #ef4444, #f97316);
+    box-shadow: 0 0 40px rgba(239, 68, 68, 0.5);
+}
+
+/* ===== TYPOGRAPHY ===== */
+
+.main-title {
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin: 0 0 12px;
+}
+
+.main-subtitle {
+    color: #cbd5e1;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 30px;
+}
+
+/* ===== WARNING BANNER ===== */
+
+.warning-banner {
+    padding: 20px;
+    margin-bottom: 25px;
+
+    color: #fecaca;
+    font-size: 16px;
+    font-weight: bold;
+
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(248, 113, 113, 0.6);
+    border-radius: 14px;
+
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.2);
+
+    animation:
+            warningShake 0.5s ease,
+            warningPulse 2s ease-in-out 0.5s infinite;
+}
+
+@keyframes warningShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+}
+
+@keyframes warningPulse {
+    0%, 100% {
+        box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 35px rgba(239, 68, 68, 0.5);
+    }
+}
+
+/* ===== BUTTON ===== */
+
+.main-button {
+    width: 100%;
+    padding: 16px;
+
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.main-button:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 12px 35px rgba(139, 92, 246, 0.6);
+}
+
+.main-button:active {
+    transform: scale(0.96);
+}
+
+.main-button.warning-active {
+    background: linear-gradient(135deg, #ef4444, #f97316);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+}
+
+.main-button:focus-visible {
+    outline: 3px solid white;
+    outline-offset: 4px;
+}
+
+/* ===== FOOTER ===== */
+
+.main-footer {
+    margin-top: 30px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #94a3b8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .main-container,
+    .main-card,
+    .main-icon,
+    .warning-banner {
+        animation: none;
+    }
+
+    .main-card,
+    .main-button {
+        transition: none;
+    }
+
+    .main-card:hover,
+    .main-button:hover {
+        transform: none;
+    }
+}

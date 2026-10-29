@@ -1,0 +1,168 @@
+
+/* ===== LOGIN CONTROL DESIGN ===== */
+
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    overflow: hidden;
+
+    background: linear-gradient(
+            135deg, #0f172a, #312e81, #581c87, #0f172a
+    );
+    background-size: 300% 300%;
+    animation: loginGradient 12s ease infinite;
+    perspective: 1000px;
+}
+
+@keyframes loginGradient {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* ===== 3D LOGIN CARD ===== */
+
+.login-card {
+    width: 400px;
+    max-width: 100%;
+    padding: 45px 35px;
+    border-radius: 24px;
+    text-align: center;
+    color: white;
+
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    box-shadow:
+            0 25px 70px rgba(0, 0, 0, 0.4),
+            0 0 40px rgba(139, 92, 246, 0.15);
+
+    animation: loginEntrance 0.9s ease-out;
+    transition: transform 0.4s, box-shadow 0.4s;
+}
+
+.login-card:hover {
+    transform: rotateY(5deg) rotateX(4deg) translateY(-7px);
+    box-shadow: 0 35px 85px rgba(139, 92, 246, 0.35);
+}
+
+@keyframes loginEntrance {
+    from {
+        opacity: 0;
+        transform: translateY(60px) rotateX(-20deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+    }
+}
+
+/* ===== LOGIN ICON ===== */
+
+.login-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 22px;
+    font-size: 38px;
+
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    box-shadow: 0 10px 35px rgba(139, 92, 246, 0.45);
+
+    animation: loginFloat 3s ease-in-out infinite;
+}
+
+@keyframes loginFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* ===== CONTENT ===== */
+
+.login-content {
+    margin-bottom: 28px;
+    animation: loginFade 0.5s ease;
+}
+
+.login-content h1,
+.login-content h2 {
+    color: white;
+    font-size: 27px;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.login-content p {
+    color: #cbd5e1;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+@keyframes loginFade {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== LOGIN BUTTON ===== */
+
+.login-card button {
+    width: 100%;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 12px;
+
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.35);
+
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.login-card button:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 12px 35px rgba(139, 92, 246, 0.55);
+}
+
+.login-card button:active {
+    transform: scale(0.96);
+}
+
+.login-card button:focus-visible {
+    outline: 3px solid white;
+    outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .login-container,
+    .login-card,
+    .login-icon,
+    .login-content {
+        animation: none;
+    }
+
+    .login-card,
+    .login-card button {
+        transition: none;
+    }
+
+    .login-card:hover,
+    .login-card button:hover {
+        transform: none;
+    }
+}

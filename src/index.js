@@ -4,6 +4,7 @@
 //import Library from './03/enhanced_css/Library';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import "./index.css";
 //import './index.css';
 //import Clock from './04/Clock';
 //import ConfirmDialog from './04/ConfirmDialog/ConfirmDialog';
@@ -26,7 +27,13 @@ import ReactDOM from 'react-dom/client';
 //import MyButton2 from'./08/MyButton2';
 //import ConfirmButton from'./08/ConfirmButton';
 //import ConfirmButton2 from'./08/ConfirmButton2';
-import MessageSender from'./08/MessageSender';
+//import MessageSender from'./08/MessageSender';
+//import Greeting from "./09/ex1/Greeting";
+//import LogInControl from "./09/ex2/LogInControl";
+//import LogInControl2 from "./09/ex3/LogInControl2";
+//import Mailbox from "./09/ex3/Mailbox";
+import LandingPage from "./09/finalEX/LandingPage";
+//const messages = ["메일1", "메일2", "메일3"];
 const root = ReactDOM.createRoot(
     document.getElementById('root')
 );
@@ -34,7 +41,7 @@ const root = ReactDOM.createRoot(
 //setInterval(() => {
    root.render(
         <React.StrictMode>
-            <MessageSender />
+            <LandingPage />
        </React.StrictMode>
     );
 //}, 1000);
