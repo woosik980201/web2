@@ -32,7 +32,14 @@ import "./index.css";
 //import LogInControl from "./09/ex2/LogInControl";
 //import LogInControl2 from "./09/ex3/LogInControl2";
 //import Mailbox from "./09/ex3/Mailbox";
-import LandingPage from "./09/finalEX/LandingPage";
+//import LandingPage from "./09/finalEX/LandingPage";
+//import MapTest from "./10/MapTest";
+//import AttendanceBook from "./10/AttendanceBook";
+//import AttendanceCardBook from "./10/AttendanceCardBook";
+//import NameForm from "./11/NameForm";
+//import FruitSelect from "./11/FruitSelect";
+import Reservation from "./11/Reservation";
+
 //const messages = ["메일1", "메일2", "메일3"];
 const root = ReactDOM.createRoot(
     document.getElementById('root')
@@ -41,7 +48,7 @@ const root = ReactDOM.createRoot(
 //setInterval(() => {
    root.render(
         <React.StrictMode>
-            <LandingPage />
+            <Reservation />
        </React.StrictMode>
     );
 //}, 1000);

@@ -1,0 +1,293 @@
+
+.card-lobby-page {
+    min-height: 100vh;
+    background: #111419;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+.card-lobby-page * {
+    box-sizing: border-box;
+}
+
+.card-lobby-container {
+    width: 100%;
+    max-width: 720px;
+    background: #1b2026;
+    border: 1px solid #343b43;
+    padding: 32px;
+    color: #f4f1e9;
+}
+
+.card-lobby-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #353b42;
+}
+
+.card-lobby-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.card-brand-symbol {
+    width: 42px;
+    height: 42px;
+    background: #d9ae43;
+    color: #171b20;
+    font-size: 25px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-lobby-brand h2 {
+    margin: 0 0 5px;
+    font-size: 17px;
+    letter-spacing: 1.5px;
+}
+
+.card-lobby-brand span,
+.card-lobby-number {
+    font-size: 11px;
+    color: #89929e;
+    letter-spacing: 1px;
+}
+
+.card-lobby-number {
+    color: #d9ae43;
+    font-weight: bold;
+}
+
+.card-lobby-intro {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 35px 0;
+}
+
+.card-section-label {
+    color: #89929e;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+}
+
+.card-lobby-intro h1 {
+    font-size: 30px;
+    margin: 12px 0;
+    font-weight: 800;
+}
+
+.card-lobby-intro p {
+    color: #89929e;
+    font-size: 13px;
+    margin: 0;
+}
+
+.card-player-counter {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.card-player-counter strong {
+    color: #d9ae43;
+    font-size: 34px;
+    font-weight: 800;
+}
+
+.card-player-counter strong span {
+    color: #65707a;
+    margin: 0 4px;
+}
+
+.card-player-counter small {
+    color: #89929e;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.card-list-heading {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    color: #89929e;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+.card-player-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.card-player-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #252b31;
+    border: 1px solid #343b43;
+    padding: 15px 18px;
+    margin-bottom: 8px;
+    transition: background 0.2s;
+}
+
+.card-player-row:hover {
+    background: #303740;
+}
+
+.card-player-index {
+    font-size: 12px;
+    color: #69737f;
+    font-weight: bold;
+}
+
+.card-player-photo {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    object-position: center;
+    border: 1px solid #505963;
+    flex-shrink: 0;
+}
+
+.card-player-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    min-width: 0;
+}
+
+.card-player-details strong {
+    font-size: 16px;
+    color: #f4f1e9;
+}
+
+.card-player-details span {
+    font-size: 11px;
+    color: #d9ae43;
+    letter-spacing: 1px;
+}
+
+.card-player-major {
+    font-size: 12px;
+    color: #aeb6bf;
+    margin: 2px 0 0;
+    line-height: 1.5;
+}
+
+.card-ready-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 115px;
+    padding: 11px;
+    background: #343b43;
+    color: #aeb6bf;
+    border: 1px solid #4c5560;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.card-ready-button:hover {
+    border-color: #d9ae43;
+}
+
+.card-ready-button.is-ready {
+    color: #d9ae43;
+    border-color: #786637;
+    background: #393528;
+}
+
+.card-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #89929e;
+}
+
+.card-ready-button.is-ready .card-status-dot {
+    background: #d9ae43;
+}
+
+.card-lobby-status {
+    margin-top: 22px;
+    padding: 17px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+}
+
+.card-lobby-status.all-ready {
+    background: #d9ae43;
+    color: #171b20;
+}
+
+.card-lobby-status.waiting {
+    background: #303740;
+    color: #b4bdc7;
+    border: 1px solid #4c5560;
+}
+
+.card-lobby-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid #353b42;
+    color: #69737f;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.card-lobby-footer span {
+    color: #89a88b;
+}
+
+@media (max-width: 480px) {
+    .card-lobby-container {
+        padding: 20px 15px;
+    }
+
+    .card-lobby-intro h1 {
+        font-size: 23px;
+    }
+
+    .card-player-counter strong {
+        font-size: 25px;
+    }
+
+    .card-player-row {
+        gap: 9px;
+        padding: 12px 9px;
+    }
+
+    .card-player-photo {
+        width: 46px;
+        height: 46px;
+    }
+
+    .card-player-major {
+        font-size: 10px;
+    }
+
+    .card-ready-button {
+        min-width: 90px;
+        font-size: 10px;
+        padding: 10px 5px;
+    }
+}

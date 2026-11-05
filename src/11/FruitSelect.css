@@ -1,0 +1,228 @@
+
+.fruity-page {
+    min-height: 100vh;
+    background: #f8ed69;
+    padding: 50px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Arial Rounded MT Bold", "Malgun Gothic", sans-serif;
+}
+
+.fruity-page * {
+    box-sizing: border-box;
+}
+
+.fruity-shop {
+    width: 100%;
+    max-width: 550px;
+}
+
+.fruity-header {
+    background: #ed584b;
+    border: 3px solid #202020;
+    border-radius: 18px;
+    padding: 32px 15px;
+    text-align: center;
+    box-shadow: 6px 6px 0 #202020;
+    transform: rotate(-1deg);
+}
+
+.fruity-header span {
+    color: #fff5d9;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.fruity-header h1 {
+    font-size: clamp(36px, 9vw, 58px);
+    font-weight: 1000;
+    color: #fff8db;
+    letter-spacing: -2px;
+    margin: 10px 0;
+    text-shadow: 3px 3px 0 #b73238;
+}
+
+.fruity-header p {
+    color: #fff5d9;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.fruity-characters {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 32px 0;
+}
+
+.fruit-character {
+    aspect-ratio: 1;
+    border: 3px solid #202020;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 4px 4px 0 #202020;
+}
+
+.fruit-character span {
+    font-size: 43px;
+}
+
+.fruit-character small {
+    font-size: 10px;
+    font-weight: 900;
+    margin-top: 7px;
+    color: #202020;
+}
+
+.fruit-character:hover {
+    transform: translateY(-8px) rotate(-4deg);
+}
+
+.fruit-character.selected {
+    outline: 4px dashed #ed584b;
+    outline-offset: 4px;
+    transform: translateY(-5px);
+}
+
+.fruity-form-card {
+    position: relative;
+    background: #fffbea;
+    border: 3px solid #202020;
+    border-radius: 20px;
+    padding: 35px 28px;
+    box-shadow: 7px 7px 0 #202020;
+}
+
+.fruity-form-card h2 {
+    font-size: 28px;
+    color: #202020;
+    margin: 0 0 8px;
+    font-weight: 1000;
+}
+
+.fruity-form-card > p {
+    color: #555;
+    font-size: 14px;
+    margin-bottom: 28px;
+}
+
+.fruity-sticker {
+    position: absolute;
+    right: -12px;
+    top: -18px;
+    background: #9ed77a;
+    border: 2px solid #202020;
+    border-radius: 50%;
+    width: 83px;
+    height: 83px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 900;
+    transform: rotate(15deg);
+}
+
+.fruity-form-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.fruity-form-card label {
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.fruity-form-card select {
+    width: 100%;
+    padding: 15px;
+    border: 3px solid #202020;
+    border-radius: 10px;
+    background: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.fruity-form-card button {
+    margin-top: 8px;
+    padding: 18px;
+    background: #ed584b;
+    border: 3px solid #202020;
+    border-radius: 12px;
+    box-shadow: 4px 4px 0 #202020;
+    color: white;
+    font-size: 18px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.fruity-form-card button:hover {
+    background: #dc433a;
+    transform: translateY(-3px);
+}
+
+.fruity-form-card button:active {
+    transform: translate(4px, 4px);
+    box-shadow: none;
+}
+
+.fruity-result {
+    margin-top: 25px;
+    padding: 18px;
+    background: #fce5e1;
+    border: 2px dashed #ed584b;
+    border-radius: 12px;
+    color: #b63131;
+    font-weight: 900;
+    text-align: center;
+}
+
+.fruity-result span {
+    display: block;
+    font-size: 36px;
+    margin-top: 10px;
+}
+
+.fruity-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 30px 5px;
+    font-size: 11px;
+    font-weight: 900;
+    color: #633a30;
+}
+
+@media (max-width: 480px) {
+    .fruity-characters {
+        gap: 7px;
+    }
+
+    .fruit-character span {
+        font-size: 30px;
+    }
+
+    .fruit-character small {
+        font-size: 8px;
+    }
+
+    .fruity-form-card {
+        padding: 30px 18px;
+    }
+
+    .fruity-form-card h2 {
+        font-size: 22px;
+    }
+}
