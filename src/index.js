@@ -38,8 +38,9 @@ import "./index.css";
 //import AttendanceCardBook from "./10/AttendanceCardBook";
 //import NameForm from "./11/NameForm";
 //import FruitSelect from "./11/FruitSelect";
-import Reservation from "./11/Reservation";
-
+//import Reservation from "./11/Reservation";
+//import Calculator from "./12/ex4/Calculator";
+import DistanceConverter from "./12/ex5/DistanceConverter";
 //const messages = ["메일1", "메일2", "메일3"];
 const root = ReactDOM.createRoot(
     document.getElementById('root')
@@ -48,7 +49,7 @@ const root = ReactDOM.createRoot(
 //setInterval(() => {
    root.render(
         <React.StrictMode>
-            <Reservation />
+            <DistanceConverter />
        </React.StrictMode>
     );
 //}, 1000);

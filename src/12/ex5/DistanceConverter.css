@@ -1,0 +1,45 @@
+body { margin:0; min-height:100vh; background:radial-gradient(circle at 50% 0%,#272a32,#0b0c10 70%); color:#fff; font-family:Arial,Helvetica,sans-serif; }
+.converter { box-sizing:border-box; width:min(640px,calc(100% - 32px)); margin:55px auto; padding:32px; border:1px solid #3a3b42; border-top:5px solid #e10600; border-radius:12px; background:linear-gradient(145deg,#222329,#101115); box-shadow:0 25px 70px #0009; overflow:hidden; }
+.race-header { display:flex; align-items:center; gap:8px; color:#f8f8f8; font-size:11px; font-weight:900; letter-spacing:2px; }
+.race-dot { width:9px; height:9px; background:#e10600; border-radius:50%; box-shadow:0 0 12px #e10600; }
+.race-tag { margin-left:auto; color:#999aa4; font-size:9px; letter-spacing:1px; }
+.converter h2 { margin:20px 0 22px; font-size:clamp(25px,5vw,36px); font-style:italic; font-weight:900; letter-spacing:-1px; }
+.converter h2 em { color:#e10600; font-style:inherit; }
+.race-stage { position:relative; height:225px; overflow:hidden; border:1px solid #383b43; border-radius:10px; background:linear-gradient(#252a33 0%,#14171d 64%,#24252b 64%,#101116 100%); perspective:650px; }
+.race-glow { position:absolute; width:320px; height:140px; left:50%; top:15px; transform:translateX(-50%); background:radial-gradient(ellipse,#b20a102e,transparent 72%); }
+.race-road { position:absolute; left:-15%; right:-15%; bottom:-28px; height:115px; background:repeating-linear-gradient(95deg,#22252c 0 35px,#24272e 35px 70px); transform:rotateX(58deg); transform-origin:bottom; border-top:3px solid #666; }
+.race-line { position:absolute; top:50%; left:-100%; width:300%; height:7px; background:repeating-linear-gradient(90deg,#e5e5e5 0 75px,transparent 75px 135px); }
+.is-running .race-line { animation:roadMove .65s linear infinite; }
+.race-car { position:absolute; left:50%; top:51px; width:340px; height:120px; transform:translateX(-50%) rotate(-4deg) skewX(-5deg); filter:drop-shadow(0 12px 8px #0009); }
+.is-running .race-car { animation:carVibrate .22s ease-in-out infinite alternate; }
+.car-shadow { position:absolute; left:20px; bottom:5px; width:300px; height:30px; border-radius:50%; background:#000a; filter:blur(10px); }
+.car-body { position:absolute; left:40px; top:49px; width:255px; height:43px; border-radius:35% 60% 23% 25%; background:linear-gradient(#ff4c45 0%,#e10600 36%,#9c0607 80%); border-bottom:5px solid #650304; box-shadow:inset 0 5px 0 #ff8b84; }
+.car-nose { position:absolute; left:240px; top:59px; width:92px; height:18px; border-radius:0 85% 40% 0; background:linear-gradient(#ff544d,#ad0505); transform:rotate(-4deg); }
+.car-cockpit { position:absolute; left:126px; top:23px; width:85px; height:47px; border-radius:70% 65% 0 0; background:linear-gradient(125deg,#101115,#343842 55%,#0c0d10); border:5px solid #cc0b0c; transform:skewX(-17deg); }
+.car-helmet { position:absolute; left:158px; top:20px; width:33px; height:29px; border-radius:50% 50% 25% 25%; background:linear-gradient(125deg,#fff,#c2c7d1 65%,#444); border-bottom:8px solid #14171e; }
+.car-stripe { position:absolute; left:66px; top:63px; width:150px; height:6px; background:#fff; transform:skewX(-30deg); opacity:.85; }
+.front-wing,.rear-wing { position:absolute; background:#101115; border-top:5px solid #f13a35; z-index:2; }
+.front-wing { left:292px; top:78px; width:48px; height:12px; transform:skewX(-20deg); }
+.rear-wing { left:13px; top:30px; width:65px; height:17px; transform:skewX(13deg); box-shadow:8px 10px 0 #16171b; }
+.wheel { position:absolute; top:70px; width:56px; height:56px; border-radius:50%; z-index:4; background:repeating-conic-gradient(#26282c 0deg 30deg,#555963 30deg 45deg); border:10px solid #08090c; box-sizing:border-box; box-shadow:0 0 0 3px #3e4045,inset 0 0 0 8px #16181d; }
+.wheel::after { content:""; position:absolute; inset:13px; background:#e10600; border-radius:50%; }
+.wheel-rear { left:57px; } .wheel-front { left:258px; }
+.is-running .wheel { animation:wheelSpin .28s linear infinite; }
+.race-caption { position:absolute; bottom:10px; left:15px; right:15px; display:flex; justify-content:space-between; color:#b8bbc3; font-size:10px; font-weight:bold; letter-spacing:1px; }
+.race-caption span { color:#ff6863; }
+.race-controls { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:12px 0 28px; font-size:10px; letter-spacing:1px; color:#858893; }
+.race-controls button { cursor:pointer; color:#fff; background:#e10600; border:0; border-radius:5px; padding:10px 14px; font-size:10px; font-weight:800; letter-spacing:1px; }
+.race-controls button:hover { background:#ff2924; }
+.input-container { display:flex; gap:16px; }
+.distance-input { flex:1; min-width:0; padding:17px 14px; background:#25262c; border:1px solid #3c3d44; border-radius:8px; }
+.distance-input label { display:block; color:#b8bac2; font-size:12px; font-weight:bold; margin-bottom:12px; }
+.distance-input input { box-sizing:border-box; width:100%; padding:12px 10px; color:#fff; background:#141519; border:1px solid #44454b; border-radius:5px; font-size:22px; font-weight:800; outline:none; }
+.distance-input input:focus { border-color:#e10600; box-shadow:0 0 0 2px #e1060030; }
+.result { margin-top:22px; padding:22px 15px; text-align:center; background:#2b1114; border:1px solid #743034; border-left:5px solid #e10600; border-radius:7px; font-size:17px; font-weight:800; line-height:1.5; }
+.result small { display:block; margin-bottom:10px; color:#ff7771; font-size:10px; letter-spacing:2px; }
+.race-footer { display:flex; justify-content:space-between; margin-top:24px; padding-top:14px; border-top:1px solid #34353b; color:#999ba5; font-size:9px; letter-spacing:1px; }
+@keyframes wheelSpin { to { transform:rotate(360deg); } }
+@keyframes roadMove { to { transform:translateX(135px); } }
+@keyframes carVibrate { from { transform:translateX(-50%) translateY(0) rotate(-4deg) skewX(-5deg); } to { transform:translateX(-50%) translateY(2px) rotate(-3deg) skewX(-5deg); } }
+@media(max-width:550px) { .converter { padding:20px; margin:25px auto; } .input-container { flex-direction:column; } .race-car { scale:.75; transform-origin:center; } .race-tag { display:none; } }
+@media(prefers-reduced-motion:reduce) { .race-car,.wheel,.race-line { animation:none!important; } }
