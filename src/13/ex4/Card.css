@@ -1,0 +1,13 @@
+.Card {
+    margin: 12px;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+.Card h1 {
+    margin: 0 0 12px;
+}
+
+.Card p {
+    margin: 6px 0;
+}

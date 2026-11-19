@@ -40,7 +40,13 @@ import "./index.css";
 //import FruitSelect from "./11/FruitSelect";
 //import Reservation from "./11/Reservation";
 //import Calculator from "./12/ex4/Calculator";
-import DistanceConverter from "./12/ex5/DistanceConverter";
+//import DistanceConverter from "./12/ex5/DistanceConverter";
+//import WelcomeDialog from "./13/ex1/WelcomeDialog";
+//import WelcomeDialog from "./13/ex2/WelcomeDialog";
+//import SignUpDialogue from "./13/ex3/SignUpDialogue";
+//import ProfileCard from "./13/ex4/ProfileCard";
+import TravelPage from "./13/ex4/TravelPage";
+
 //const messages = ["메일1", "메일2", "메일3"];
 const root = ReactDOM.createRoot(
     document.getElementById('root')
@@ -49,7 +55,7 @@ const root = ReactDOM.createRoot(
 //setInterval(() => {
    root.render(
         <React.StrictMode>
-            <DistanceConverter />
+            <TravelPage />
        </React.StrictMode>
     );
 //}, 1000);

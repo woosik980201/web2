@@ -1,0 +1,42 @@
+.travel-page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.travel-section {
+    margin-top: 28px;
+}
+
+.travel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 16px;
+}
+
+.travel-grid > .Card {
+    margin: 0;
+}
+
+.travel-grid img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.travel-like {
+    margin-top: 12px;
+    padding: 6px 12px;
+    border: 1px solid #37634d;
+    border-radius: 6px;
+    background: white;
+    color: #244a38;
+    cursor: pointer;
+}
+
+.travel-like[aria-pressed="true"] {
+    background: #244a38;
+    color: white;
+}
