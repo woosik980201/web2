@@ -9,7 +9,7 @@ export default function TravelCard({ stay, onToggleLike }) {
                 <img
                     className="travel-card-image"
                     src={stay.image}
-                    alt={stay.title}
+                    alt={stay.imageAlt || stay.title}
                 />
             )}
 
@@ -23,6 +23,14 @@ export default function TravelCard({ stay, onToggleLike }) {
             >
                 {stay.liked ? "♥ 찜 취소" : "♡ 찜하기"}
             </button>
+
+            {stay.imageCredit && (
+                <p className="travel-card-credit">
+                    사진 <a href={stay.imageCredit.source}>{stay.imageCredit.author}</a>
+                    {" · "}
+                    <a href={stay.imageCredit.license}>CC BY-SA 4.0</a>
+                </p>
+            )}
         </article>
     );
 }
