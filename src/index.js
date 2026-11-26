@@ -45,8 +45,11 @@ import "./index.css";
 //import WelcomeDialog from "./13/ex2/WelcomeDialog";
 //import SignUpDialogue from "./13/ex3/SignUpDialogue";
 //import ProfileCard from "./13/ex4/ProfileCard";
-import TravelPage from "./13/ex4/TravelPage";
-
+//import TravelPage from "./13/ex4/TravelPage";
+//import MainContent from "./14/ex1/MainContent";
+//import ShoppingInfoPage from "./14/ex2/ShoppingInfoPage";
+import ArchivePage from "./14/archive/ArchivePage";
+import "./index.css";
 //const messages = ["메일1", "메일2", "메일3"];
 const root = ReactDOM.createRoot(
     document.getElementById('root')
@@ -55,7 +58,7 @@ const root = ReactDOM.createRoot(
 //setInterval(() => {
    root.render(
         <React.StrictMode>
-            <TravelPage />
+            <ArchivePage />
        </React.StrictMode>
     );
 //}, 1000);

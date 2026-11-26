@@ -1,0 +1,273 @@
+/* SENSORY ARCHIVE — 콜라주 아카이브
+   색: SA-009에서 남기고 싶다고 적은 빛바랜 갈색·청색을 종이 톤 위에 올린다 */
+.archive-page {
+    --paper: #ece7de;
+    --stage: #e2dccf;
+    --ink: #2b2723;
+    --muted: #7d756b;
+    --brown: #8a6a52;
+    --blue: #a9bfcb;
+    --card: #fbfaf6;
+    --line: #cfc7b9;
+    min-height: 100vh;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Noto Sans KR", Arial, sans-serif;
+    transition: background .25s, color .25s;
+}
+.archive-page.dark {
+    --paper: #171614;
+    --stage: #0f0f0e;
+    --ink: #ece7de;
+    --muted: #9a9288;
+    --brown: #6f5644;
+    --blue: #4d6573;
+    --card: #23211e;
+    --line: #3a3733;
+}
+.archive-page button { font: inherit; color: inherit; cursor: pointer; }
+.archive-page button:focus-visible { outline: 2px solid var(--brown); outline-offset: 3px; }
+
+/* 헤더 — 반듯한 줄 대신, 종이 위에 붙여 둔 메모처럼 조금씩 기울인다 */
+.sa-header {
+    position: relative; display: flex; align-items: center; flex-wrap: wrap;
+    max-width: 1400px; margin: 0 auto; padding: 34px 4% 14px;
+}
+.sa-logo { color: inherit; text-decoration: none; font-size: 22px; font-weight: 700; letter-spacing: 4px; transform: rotate(-1.5deg); }
+.sa-sub { margin-left: 18px; font: 11px Consolas, monospace; color: var(--brown); transform: rotate(3deg); }
+.archive-page.dark .sa-sub { color: var(--muted); }
+.archive-page .theme-button {
+    position: absolute; top: 26px; right: 4%; border: 0; background: transparent;
+    font: 11px Consolas, monospace; transform: rotate(2deg);
+}
+.archive-page .theme-button::before { content: "◐ "; }
+
+.sa-main { max-width: 1400px; margin: 0 auto; padding: 6px 4% 60px; }
+
+/* 툴바 — 분야 이름은 높이와 기울기를 조금씩 달리해 흩뿌린다 */
+.sa-toolbar { position: relative; display: flex; align-items: baseline; gap: 6px 22px; flex-wrap: wrap; margin: 0 0 18px 1%; font-size: 13px; }
+.sa-filters { display: flex; gap: 4px 18px; flex-wrap: wrap; }
+.sa-filters button { padding: 0 6px; border: 0; border-radius: 0; background: none; font-size: 17px; font-weight: 500; line-height: 1.4; color: var(--muted); }
+.sa-filters button:nth-child(1) { font-size: 15px; transform: translateY(-3px) rotate(-3deg); }
+.sa-filters button:nth-child(2) { transform: translateY(5px) rotate(2deg); }
+.sa-filters button:nth-child(3) { transform: translateY(-2px) rotate(-1deg); }
+.sa-filters button:nth-child(4) { transform: translateY(7px) rotate(3deg); }
+.sa-filters button:nth-child(5) { transform: rotate(-2deg); }
+/* 선택한 분야: 마스킹 테이프 색을 밑줄처럼 깐다 */
+.sa-filters button.selected { background: linear-gradient(transparent 52%, var(--blue) 52%, var(--blue) 92%, transparent 92%); color: var(--ink); }
+.sa-count { font: 11px Consolas, monospace; color: var(--muted); transform: rotate(-4deg); }
+/* 콜라주/목록 전환: 무대 오른쪽 위 모서리에 붙인 종이 탭 */
+.sa-views { position: absolute; right: 26px; bottom: -34px; z-index: 8; display: flex; }
+.sa-views button {
+    padding: 6px 12px 8px; border: 0; background: var(--card); box-shadow: 0 4px 10px rgba(0, 0, 0, .18);
+    font: 11px Consolas, monospace; letter-spacing: .08em;
+}
+.sa-views button:first-child { transform: rotate(-4deg); }
+.sa-views button:last-child { transform: rotate(3deg) translate(-4px, 4px); }
+.sa-views button.selected { background: var(--ink); color: var(--paper); }
+
+/* 무대 */
+.sa-stage {
+    position: relative; overflow: hidden;
+    height: min(74vh, 700px); min-height: 520px;
+    background-color: var(--stage);
+    /* 테두리 대신 위·아래 가장자리를 찢긴 종이처럼 */
+    clip-path: polygon(0.0% 0.45%, 4.2% 0.21%, 8.3% 0.91%, 12.5% 0.10%, 16.7% 0.75%, 20.8% 0.51%, 25.0% 0.08%, 29.2% 0.71%, 33.3% 0.05%, 37.5% 0.61%, 41.7% 0.10%, 45.8% 0.13%, 50.0% 0.59%, 54.2% 1.16%, 58.3% 0.17%, 62.5% 0.31%, 66.7% 0.88%, 70.8% 1.33%, 75.0% 0.81%, 79.2% 0.56%, 83.3% 1.37%, 87.5% 0.07%, 91.7% 1.20%, 95.8% 0.41%, 100.0% 0.20%, 100.0% 99.84%, 95.8% 99.57%, 91.7% 98.86%, 87.5% 99.75%, 83.3% 99.19%, 79.2% 99.11%, 75.0% 99.48%, 70.8% 99.23%, 66.7% 99.91%, 62.5% 99.92%, 58.3% 99.71%, 54.2% 99.05%, 50.0% 99.40%, 45.8% 99.56%, 41.7% 99.18%, 37.5% 99.37%, 33.3% 99.58%, 29.2% 98.89%, 25.0% 99.02%, 20.8% 99.66%, 16.7% 99.20%, 12.5% 99.26%, 8.3% 98.77%, 4.2% 98.98%, 0.0% 99.60%);
+    transition: background-color .9s ease;
+}
+/* 기록의 공간에 들어서면 라이트 모드여도 무대만 조명이 꺼진 듯 어두워진다.
+   다크 모드와 같은 값을 무대 안에서만 다시 정의하므로 페이지(헤더·툴바)는 그대로다.
+   캔버스(입자 선·인물)는 20프레임마다 --ink를 다시 읽어서 함께 바뀐다 */
+.sa-stage.immersed {
+    --paper: #171614;
+    --stage: #0f0f0e;
+    --ink: #ece7de;
+    --muted: #9a9288;
+    --brown: #6f5644;
+    --blue: #4d6573;
+    --card: #23211e;
+    --line: #3a3733;
+}
+
+/* 무대 배경: 올라선 기록의 이미지들이 찢긴 조각으로 조립되고, 떠나면 해체된다 (SceneCollage.jsx) */
+.sa-backdrop { position: absolute; inset: 0; pointer-events: none; }
+.sa-scene { position: absolute; inset: 0; }
+.sa-frag {
+    position: absolute; background-size: cover;
+    transform: translate(-50%, -50%) rotate(var(--r));
+    /* 흐림은 고정. 움직이는 건 위치와 투명도뿐이다 */
+    filter: blur(10px) saturate(.8) sepia(.12);
+    opacity: .9; will-change: transform, opacity;
+    animation: frag-in 1s cubic-bezier(.2, .7, .2, 1) var(--d) both;
+}
+/* 바탕 장면: 무대 전체에 크게 흐리게. 흐림 때문에 가장자리가 비치지 않게 120%로 키워 둔다 */
+.sa-frag.base { filter: blur(40px) saturate(.8) sepia(.12); opacity: 1; }
+.sa-scene.leaving .sa-frag { animation: frag-out .9s ease-in forwards; }
+@keyframes frag-in {
+    from { transform: translate(calc(-50% + var(--sx)), calc(-50% + var(--sy))) rotate(var(--sr)) scale(.85); opacity: 0; }
+}
+@keyframes frag-out {
+    to { transform: translate(calc(-50% + var(--sx)), calc(-50% + var(--sy))) rotate(var(--sr)) scale(.85); opacity: 0; }
+}
+/* 덮개: 조각·와이어·이름표가 배경에 묻히지 않게 무대색을 한 겹 덮는다 */
+.sa-veil { position: absolute; inset: 0; background: var(--stage); opacity: .55; transition: background-color .9s ease, opacity .9s ease; }
+/* 기록 안에서는 덮개를 얇게 해서 그 기록의 공간이 비치게 한다 */
+.sa-stage.immersed .sa-veil { opacity: .3; }
+/* 네트워크 편집기 같은 점 격자. 배경이 바뀌어도 같은 무대라는 감각을 붙잡는다 */
+.sa-grid {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(var(--line) 1.2px, transparent 1.3px);
+    background-size: 26px 26px;
+}
+
+/* 조각 */
+.sa-piece {
+    position: absolute; padding: 6px 6px 22px; border: 0;
+    background: var(--card); box-shadow: 0 6px 16px rgba(0, 0, 0, .22);
+    transition: box-shadow .4s, filter .25s, opacity .25s, background-color .4s;
+}
+.sa-piece::before { /* 마스킹 테이프 */
+    content: ""; position: absolute; top: -9px; left: 50%; width: 54px; height: 18px;
+    background: var(--blue); opacity: .8; transform: translateX(-50%) rotate(-3deg);
+    transition: opacity .4s;
+}
+/* 기록의 공간 안에서는 다른 조각의 폴라로이드 테두리와 테이프가 사라져 공간에 녹아든다.
+   올라선 조각(입구)만 폴라로이드로 남는다 */
+.sa-stage.immersed .sa-piece:not(.active) { background-color: transparent; box-shadow: none; }
+.sa-stage.immersed .sa-piece:not(.active)::before { opacity: 0; }
+/* 기록 안에서는 공간이 주인공: 다른 조각은 뒤에 남은 유령처럼 흐려지고,
+   이름표·단자·입자 그래픽·분야 연결선처럼 보드를 설명하던 요소는 잠시 물러난다.
+   남는 것은 올라선 조각, 와이어, 내 순서 선 — 지금 어디에 있고 어떻게 왔는지 */
+.sa-stage.immersed .sa-piece:not(.active) { opacity: .22; }
+.sa-piece .piece-label, .sa-piece .port { transition: opacity .6s; }
+.sa-stage.immersed .sa-piece:not(.active) .piece-label,
+.sa-stage.immersed .sa-piece:not(.active) .port { opacity: 0; }
+.sa-field, .sa-links { transition: opacity .6s; }
+.sa-stage.immersed .sa-field,
+.sa-stage.immersed .sa-links { opacity: 0; }
+.sa-piece img { display: block; width: 100%; filter: saturate(.8) sepia(.12); }
+.sa-piece .piece-label { transition: color .9s; position: absolute; left: 7px; right: 7px; bottom: 5px; font-size: 10px; color: var(--muted); letter-spacing: .04em; text-align: left; white-space: nowrap; overflow: hidden; }
+.sa-piece .op { margin-right: 5px; padding: 1px 4px; font-family: Consolas, monospace; font-weight: 400; color: #fff; }
+.sa-piece .op.TOP { background: #7a5fa8; }
+.sa-piece .op.CHOP { background: #4f8f5f; }
+/* 노드의 입력·출력 단자 */
+.sa-piece .port { position: absolute; top: 50%; width: 9px; height: 9px; margin-top: -5px; border: 1.5px solid var(--ink); border-radius: 50%; background: var(--stage); }
+.sa-piece .port.in { left: -5px; }
+.sa-piece .port.out { right: -5px; }
+.sa-piece.active .port { background: #d7e84a; }
+.sa-piece.slip .port { display: none; }
+.sa-piece.slip { padding: 16px 12px 26px; clip-path: polygon(0 3%, 8% 0, 22% 4%, 40% 0, 61% 3%, 80% 0, 100% 4%, 98% 96%, 84% 100%, 60% 97%, 38% 100%, 16% 96%, 0 100%); }
+.sa-piece.slip::before { display: none; }
+.slip-text { display: block; font-size: 14px; font-weight: 700; line-height: 1.35; text-align: left; }
+.sa-piece.active { z-index: 3; box-shadow: 0 0 0 2px var(--ink), 0 14px 30px rgba(0, 0, 0, .35); }
+.sa-piece.active img { filter: drop-shadow(3px 0 0 rgba(255, 60, 90, .6)) drop-shadow(-3px 0 0 rgba(40, 150, 255, .6)); }
+.sa-piece.dimmed { opacity: .18; cursor: default; }
+
+/* 기록 사이의 네트워크 선 */
+.sa-links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.sa-links path { fill: none; stroke: var(--ink); stroke-width: 1; opacity: .35; vector-effect: non-scaling-stroke; transition: stroke .9s; }
+.sa-links path.dimmed { opacity: .08; }
+
+/* 내가 발견한 순서: 들른 기록을 차례로 잇는 선과 글자 */
+.sa-path-line { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.sa-path-line path { fill: none; stroke: var(--ink); stroke-width: 1.5; vector-effect: non-scaling-stroke; transition: stroke .9s; }
+.sa-path-line .strand-old { opacity: .12; stroke-width: 1; } /* 오래된 길: 흔적만 남긴다 */
+.sa-path-line .strand-0 { opacity: .6; }
+.sa-path-line .strand-1 { opacity: .25; stroke-width: 1; }
+.sa-path-line .strand-2 { opacity: .15; stroke-width: 1; }
+.sa-path {
+    /* 바닥 파형과 겹쳐도 읽히게 작은 종이 조각 위에 올린다 */
+    position: absolute; left: 12px; bottom: 16px; z-index: 6; margin: 0; max-width: 60%;
+    padding: 4px 9px; background: var(--card); box-shadow: 0 3px 8px rgba(0, 0, 0, .18); transform: rotate(-1deg);
+    font: 11px/1.5 Consolas, monospace; color: var(--ink); pointer-events: none;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color .9s;
+}
+.sa-path span { color: var(--muted); margin-right: 6px; }
+
+/* 와이어와 노드 라벨 */
+.sa-wire { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 4; pointer-events: none; }
+.sa-wire path { fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 5 4; vector-effect: non-scaling-stroke; animation: wire-flow .8s linear infinite; }
+@keyframes wire-flow { to { stroke-dashoffset: -9; } }
+.sa-node {
+    position: absolute; z-index: 6; transform: translate(-50%, 8px);
+    padding: 5px 9px; background: var(--ink); color: var(--paper);
+    font-size: 11px; white-space: nowrap; max-width: 90%; overflow: hidden; text-overflow: ellipsis;
+}
+.sa-node span { margin-left: 8px; opacity: .7; }
+
+/* 인물: 점 구름으로 그린 사람 (Walker.jsx의 canvas) */
+.sa-walker { position: absolute; z-index: 5; transform: translate(-50%, -100%); pointer-events: none; }
+/* difference 혼합: 밝은 바탕에서는 어둡게, 어두운 사진 위에서는 밝게 보인다 */
+.sa-walker { mix-blend-mode: difference; }
+.sa-walker canvas { display: block; color: #fff; }
+
+/* 바닥에 깔리는 생성형 그래픽 */
+.sa-field { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--ink); pointer-events: none; }
+
+/* 올라선 조각에 뜨는 추적 상자 */
+.sa-piece .track { display: none; }
+.sa-piece.active .track {
+    display: block; position: absolute; inset: -12px; border: 1px solid var(--ink);
+    font: 9px/1 Consolas, monospace; color: var(--ink); text-align: left; padding: 2px 3px; pointer-events: none;
+}
+
+.sa-hud {
+    position: absolute; left: 12px; top: 14px; margin: 0; z-index: 2;
+    display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    font-size: 11px; color: var(--muted); pointer-events: none;
+}
+
+/* 파라미터 창 */
+.sa-params {
+    position: absolute; right: 12px; bottom: 12px; z-index: 6; margin: 0; padding: 8px 10px;
+    display: grid; grid-template-columns: auto auto; gap: 2px 14px;
+    background: rgba(30, 30, 30, .86); color: #e6e6e6;
+    font: 11px/1.5 Consolas, monospace; pointer-events: none;
+}
+.sa-params dt { color: #9aa0a6; }
+.sa-params dd { margin: 0; text-align: right; color: #d7e84a; }
+
+/* 목록 보기 */
+.sa-list { list-style: none; margin: 44px 0 0; padding: 0; border-top: 1px solid var(--line); } /* 위의 종이 탭이 첫 줄을 가리지 않게 */
+.sa-list button {
+    display: grid; grid-template-columns: 70px 1fr auto; gap: 14px; align-items: baseline;
+    width: 100%; padding: 14px 4px; border: 0; border-bottom: 1px solid var(--line);
+    background: transparent; text-align: left; font-size: 13px;
+}
+.sa-list button span { color: var(--muted); font-size: 12px; }
+.sa-list button:hover strong { color: var(--brown); }
+
+/* 들어간 페이지 */
+.sa-detail { position: fixed; inset: 0; z-index: 20; overflow-y: auto; background: var(--paper); animation: detail-in .3s ease-out; }
+@keyframes detail-in { from { opacity: 0; transform: scale(1.03); } }
+.sa-detail-inner { max-width: 1100px; margin: 0 auto; padding: 24px 5% 80px; }
+.sa-back { padding: 8px 0; border: 0; background: transparent; font-size: 13px; text-decoration: underline; }
+.sa-detail-meta { margin: 26px 0 6px; color: var(--muted); font-size: 12px; letter-spacing: .06em; }
+.sa-detail h2 { margin: 0 0 8px; font-size: clamp(26px, 4vw, 40px); line-height: 1.15; }
+.sa-detail-credits { margin: 0 0 30px; color: var(--muted); font-size: 13px; }
+.sa-detail-body { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 40px; }
+.sa-detail-text h3 { margin: 0 0 8px; font-size: 12px; color: var(--brown); letter-spacing: .08em; }
+.sa-detail-text p { margin: 0 0 26px; font-size: 16px; line-height: 1.75; }
+.sa-detail-text .sa-question { padding-left: 14px; border-left: 3px solid var(--blue); }
+.sa-detail-text a { color: inherit; font-size: 14px; }
+.sa-detail-text .sa-rights { margin-top: 14px; font-size: 12px; color: var(--muted); }
+.sa-detail-images { display: grid; gap: 26px; align-content: start; }
+.sa-detail-images figure { margin: 0; padding: 8px 8px 10px; background: var(--card); box-shadow: 0 8px 20px rgba(0, 0, 0, .18); }
+.sa-detail-images figure.tilt-left { transform: rotate(-1.2deg); }
+.sa-detail-images figure.tilt-right { transform: rotate(1.4deg); margin-left: 8%; }
+.sa-detail-images img { display: block; width: 100%; }
+.sa-detail-images figcaption { margin-top: 8px; font-size: 12px; color: var(--muted); }
+.sa-empty { padding: 40px 20px; border: 1px dashed var(--line); color: var(--muted); font-size: 13px; text-align: center; }
+
+@media (max-width: 760px) {
+    .sa-stage { height: 760px; }
+    .sa-piece { min-width: 92px; }
+    .sa-params { display: none; }
+    .slip-text { font-size: 12px; }
+    .sa-detail-body { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .sa-wire path, .sa-detail { animation: none; }
+    .sa-frag { animation: none; }
+    .sa-scene.leaving .sa-frag { animation: none; opacity: 0; }
+}
