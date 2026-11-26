@@ -48,7 +48,9 @@ import "./index.css";
 //import TravelPage from "./13/ex4/TravelPage";
 //import MainContent from "./14/ex1/MainContent";
 //import ShoppingInfoPage from "./14/ex2/ShoppingInfoPage";
-import ArchivePage from "./14/archive/ArchivePage";
+//import ArchivePage from "./14/archive/ArchivePage";
+// ★ 기말과제
+import FinalApp from "./final/FinalApp";
 import "./index.css";
 //const messages = ["메일1", "메일2", "메일3"];
 const root = ReactDOM.createRoot(
@@ -58,7 +60,7 @@ const root = ReactDOM.createRoot(
 //setInterval(() => {
    root.render(
         <React.StrictMode>
-            <ArchivePage />
+            <FinalApp />
        </React.StrictMode>
     );
 //}, 1000);

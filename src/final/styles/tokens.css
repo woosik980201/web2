@@ -1,0 +1,102 @@
+/* ============================================================
+   SSIKHIVE 디자인 토큰 — 모든 색·글꼴·크기·간격은 여기서만 정한다
+   근거: SENSORY ARCHIVE(src/14/archive/ArchivePage.css)의 종이 색 8개와
+        노드 화면에서 착안한 이름표 색을 그대로 이어받았다.
+   규칙: 컴포넌트 CSS(final.css)에는 색 값(#...)을 직접 쓰지 않고 var(--...)만 쓴다.
+   ============================================================ */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
+.ssik-app {
+    /* --- 1. 종이(바탕) --- */
+    --paper: #ece7de;        /* 페이지 */
+    --stage: #e2dccf;        /* 무대·캔버스 */
+    --card: #fbfaf6;         /* 조각의 테두리 종이 */
+    --line: #cfc7b9;         /* 점 격자·구분선 */
+    --ink: #2b2723;          /* 글자·와이어·도장 */
+    --muted: #7d756b;        /* 보조 글자 */
+
+    /* --- 2. 강조: 색마다 의미를 하나씩만 --- */
+    --tape: #a9bfcb;         /* 내가 고른 것 (저장·선택) — 마스킹 테이프 */
+    --brown: #8a6a52;        /* 보조 강조·포커스 */
+    --live: #d7e84a;         /* 지금 활성인 것 (노드·바뀌는 값) — 화면당 한두 곳 */
+    --stamp-ink: #1c1a17;    /* 연두 표시 위의 글자 (테마와 상관없이 어두운 색) */
+
+    /* --- 3. 노드 이름표 (SENSORY ARCHIVE의 TOP/CHOP 의미 그대로) --- */
+    --op-top: #7a5fa8;       /* 시각 자료: fashion, culture */
+    --op-chop: #4f8f5f;      /* 소리: music */
+    --op-text: #ffffff;
+    --panel: rgba(30, 30, 30, 0.88);   /* 파라미터 창 */
+    --panel-key: #9aa0a6;
+    --panel-text: #e6e6e6;
+    --overlay: rgba(23, 22, 20, 0.6);  /* 상세 보기 뒤를 덮는 막 */
+    --intro-bg: #000000;     /* 첫 방문 인트로 */
+    --intro-text: #ffffff;
+    --intro-muted: rgba(255, 255, 255, 0.6);
+    --intro-dot: rgba(255, 255, 255, 0.16);  /* 인트로 점 격자 */
+    --intro-veil: rgba(0, 0, 0, 0.5);  /* 인트로 영상 위 어두운 막 (앞부분의 밝은 종이 위에서도 흰 글자가 읽히게) */
+
+    /* --- 4. 글꼴: 콘텐츠는 산세리프, 시스템 정보는 모노 --- */
+    --font-sans: "Helvetica Neue", Helvetica, "Pretendard", "Noto Sans KR", Arial, sans-serif;  /* 영문은 Helvetica 계열, 한글은 Pretendard */
+    --font-mono: "IBM Plex Mono", Consolas, monospace;
+
+    /* --- 5. 글자 크기 5단계 --- */
+    --text-wordmark: clamp(64px, 12.5vw, 168px); /* 사이트 이름 (참고 사이트처럼 화면 폭을 거의 채움) */
+    --text-display: clamp(34px, 5vw, 52px);  /* 페이지 제목 */
+    --text-title: clamp(22px, 2.6vw, 28px);  /* 섹션 제목 */
+    --text-body: 16px;
+    --text-label: 13px;
+    --text-meta: 11px;                        /* 모노 메타 정보 */
+
+    /* --- 6. 간격 (4px 단위) --- */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+    --space-8: 72px;
+
+    /* --- 7. 그림자 2종 · 모서리 · 기울기 3단계 --- */
+    --shadow-paper: 0 6px 16px rgba(0, 0, 0, 0.18);
+    --shadow-lift: 0 14px 30px rgba(0, 0, 0, 0.3);
+    --radius: 0;
+    --tilt-sm: 1.5deg;
+    --tilt-md: 3deg;
+    --tilt-lg: 15deg;
+
+    /* --- 8. 사진: 기본은 빛바랜 상태, 활성 시 원래 색 --- */
+    --photo-filter: saturate(0.8) sepia(0.12);
+    --rgb-split: drop-shadow(3px 0 0 rgba(255, 60, 90, 0.55)) drop-shadow(-3px 0 0 rgba(40, 150, 255, 0.55));
+}
+
+/* 다크: 변수만 바꾼다 (값은 SENSORY ARCHIVE 다크와 같음) */
+.ssik-app.dark {
+    --paper: #171614;
+    --stage: #0f0f0e;
+    --card: #23211e;
+    --line: #3a3733;
+    --ink: #ece7de;
+    --muted: #9a9288;
+    --tape: #4d6573;
+    --brown: #b8977c;        /* 어두운 바탕에서도 읽히게 밝힘 (명도 대비 약 6:1) */
+}
+
+/* 14장 무대(src/14/archive)는 고치지 않는다.
+   대신 무대가 쓰는 변수를 공통 토큰에서 이어받게 해서, 색과 다크 모드를 한 곳에서 관리한다.
+   (.archive-page.archive-page: 무대 CSS의 .archive-page.dark보다 우선하도록 선택자를 한 번 더 겹침) */
+.ssik-app .archive-page.archive-page {
+    --paper: inherit;
+    --stage: inherit;
+    --card: inherit;
+    --line: inherit;
+    --ink: inherit;
+    --muted: inherit;
+    --brown: inherit;
+    --blue: var(--tape);
+    font-family: var(--font-sans);
+}
+.ssik-app .archive-page :is(.sa-params, .sa-hud, .sa-node, .sa-path, .track, .op, .piece-label, .sa-detail-meta) {
+    font-family: var(--font-mono);
+}

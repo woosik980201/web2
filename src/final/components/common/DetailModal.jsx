@@ -1,0 +1,102 @@
+import React, { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import NodeTag from "./NodeTag";
+import { rights } from "../../data/references";
+
+// 레퍼런스 상세 보기. Archive에서 카드를 눌렀을 때도, Stage에서 Enter로 들어갔을 때도 이 컴포넌트 하나를 쓴다.
+// 1학기에는 jQuery로 카드 안의 글자를 읽어 모달에 옮겨 담았지만, 여기서는 데이터(item)를 props로 받아 그린다.
+//
+// item          : 레퍼런스 한 건
+// onClose       : 닫기 (×, 바깥 클릭, ESC)
+// showStageLink : true면 "무대에서 보기" 버튼을 보여 준다 (Stage 안에서는 필요 없음)
+// onDelete      : (선택) 넘겨주면 "기록 지우기" 버튼이 생긴다. 직접 추가한 기록에만 넘긴다
+function DetailModal({ item, onClose, showStageLink, onDelete }) {
+    const closeRef = useRef(null);
+
+    // 열릴 때: 키보드 포커스를 창 안(닫기 버튼)으로 옮기고, 뒤 페이지가 같이 스크롤되지 않게 막는다.
+    // 닫힐 때(cleanup): 스크롤을 풀고, 창을 열기 전에 포커스가 있던 곳(누른 카드)으로 돌려준다.
+    useEffect(() => {
+        const before = document.activeElement;
+        const prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        if (closeRef.current) closeRef.current.focus();
+        return () => {
+            document.body.style.overflow = prevOverflow;
+            if (before && before.focus) before.focus();
+        };
+    }, []);
+
+    // ESC 키로 닫기. 창이 사라질 때(cleanup) 이벤트를 꼭 떼어 낸다.
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === "Escape") onClose();
+        };
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [onClose]);
+
+    return (
+        <div className="modal" onClick={onClose}>
+            <div
+                className="paper modal-sheet"
+                role="dialog"
+                aria-modal="true"
+                aria-label={item.title}
+                onClick={(event) => event.stopPropagation()}
+            >
+                <button type="button" className="modal-close" aria-label="닫기 (ESC)" onClick={onClose} ref={closeRef}>
+                    ×
+                </button>
+
+                <div className="modal-text">
+                    <NodeTag domain={item.domain} id={item.id} />
+                    <h3>{item.title}</h3>
+                    <p className="modal-desc">{item.description}</p>
+
+                    <div className="archive-note">
+                        <p className="meta">why · {item.archive.captured}</p>
+                        <p>{item.archive.why}</p>
+                        {item.archive.question && (
+                            <>
+                                <p className="meta">digging question</p>
+                                <p className="question">{item.archive.question}</p>
+                            </>
+                        )}
+                    </div>
+
+                    <p className="meta rights-line">
+                        image rights — {rights[item.rights].label} ({item.rightsNote})
+                    </p>
+
+                    <div className="actions">
+                        {item.link && (
+                            <a className="stamp" href={item.link} target="_blank" rel="noreferrer">
+                                원본 보기 ↗
+                            </a>
+                        )}
+                        {showStageLink && (
+                            <Link className="tab" to="/stage">무대에서 보기 →</Link>
+                        )}
+                        {onDelete && (
+                            <button type="button" className="tab danger" onClick={() => onDelete(item.id)}>
+                                기록 지우기
+                            </button>
+                        )}
+                    </div>
+                </div>
+
+                {/* 기록에 모아 둔 장면 이미지 전부 */}
+                <div className="modal-gallery">
+                    {item.images.map((image, index) => (
+                        <figure key={index} className={"paper " + (index % 2 === 0 ? "tilt-left" : "tilt-right")}>
+                            <img src={image.src} alt={image.caption} />
+                            <figcaption className="meta">{image.caption}</figcaption>
+                        </figure>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default DetailModal;
