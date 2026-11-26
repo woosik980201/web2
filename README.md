@@ -1,3 +1,11 @@
+## SENSORY ARCHIVE (src/14/archive)
+
+수업 실습(14장 Context)에서 시작해 개인 프로젝트 SENSORY ARCHIVE의 콜라주 페이지로 확장한 작업이다.
+`src/14/archive/images/`의 사진 대부분은 다른 사람의 저작물이며 권리 상태를 확인하지 않았다.
+출처와 권리 상태는 [src/14/archive/CREDITS.md](src/14/archive/CREDITS.md)에 정리했다.
+
+---
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
