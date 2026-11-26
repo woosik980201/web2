@@ -176,11 +176,12 @@
 .sa-path-line .strand-1 { opacity: .25; stroke-width: 1; }
 .sa-path-line .strand-2 { opacity: .15; stroke-width: 1; }
 .sa-path {
-    /* 바닥 파형과 겹쳐도 읽히게 작은 종이 조각 위에 올린다 */
-    position: absolute; left: 12px; bottom: 16px; z-index: 6; margin: 0; max-width: 60%;
-    padding: 4px 9px; background: var(--card); box-shadow: 0 3px 8px rgba(0, 0, 0, .18); transform: rotate(-1deg);
-    font: 11px/1.5 Consolas, monospace; color: var(--ink); pointer-events: none;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color .9s;
+    /* 무대 밖, 찢긴 아래 가장자리 밑에 붙인 종이 캡션 */
+    position: relative; z-index: 2; display: inline-block; max-width: 80%;
+    margin: -6px 0 0 18px; padding: 5px 10px;
+    background: var(--card); box-shadow: 0 3px 8px rgba(0, 0, 0, .18); transform: rotate(-1deg);
+    font: 11px/1.5 Consolas, monospace; color: var(--ink);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .sa-path span { color: var(--muted); margin-right: 6px; }
 

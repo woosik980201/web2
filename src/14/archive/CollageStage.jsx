@@ -167,6 +167,7 @@ function CollageStage({ entries, selectedDomain, paused, onEnter }) {
     const pathText = (path.length > PATH_SHOWN ? "… " : "") + path.slice(-PATH_SHOWN).join(" → ");
 
     return (
+        <>
         <section className={"sa-stage" + (immersed ? " immersed" : "")} ref={stageRef} aria-label="콜라주 아카이브">
             {/* 무대 배경: 올라선 기록의 이미지들이 조각으로 조립되고, 떠나면 해체된다 (SceneCollage.jsx) */}
             <div className="sa-backdrop" aria-hidden="true">
@@ -254,12 +255,6 @@ function CollageStage({ entries, selectedDomain, paused, onEnter }) {
                 </div>
             )}
 
-            {path.length > 0 && (
-                <p className="sa-path">
-                    <span>내 순서</span> {pathText}
-                </p>
-            )}
-
             <p className="sa-hud">
                 ← ↑ ↓ → 이동 · ENTER 들어가기 · 조각을 눌러도 열려요
             </p>
@@ -275,6 +270,12 @@ function CollageStage({ entries, selectedDomain, paused, onEnter }) {
                 <dt>visit</dt><dd>{currentScene ? currentScene.visit : "—"}</dd>
             </dl>
         </section>
+
+        {/* 내가 발견한 순서: 무대 안에 두면 조각과 겹치므로 보드 아래에 붙인 캡션처럼 둔다 */}
+        <p className="sa-path">
+            <span>내 순서</span> {path.length > 0 ? pathText : "아직 들른 기록이 없어요"}
+        </p>
+        </>
     );
 }
 
