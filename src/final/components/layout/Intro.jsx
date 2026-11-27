@@ -8,7 +8,10 @@ import ParamsPanel from "../common/ParamsPanel";
 // 실물 재료(필름·파형·꽃·사진 틀)가 제자리에서 선과 와이어프레임으로 바뀌고 바탕이 어두워진다
 // → "The same material, a different shape"를 그대로 보여 주고, 아날로그 Hero와 노드 화면인 Stage를 잇는다.
 // 영상 위에는 Stage와 같은 점 격자와 파라미터 창(ParamsPanel)만 얹는다. 선과 점은 영상 안에 이미 있다.
-// SKIP 버튼이나 ESC로 건너뛸 수 있다. 본 적이 있으면 localStorage에 표시해 두고 다시 보여 주지 않는다.
+// SKIP 버튼이나 ESC로 건너뛸 수 있다.
+// 사이트를 새로 열 때마다(새 탭·새 창) 한 번 나온다. 같은 탭에서 새로고침하거나 페이지를 오갈 때는 다시 나오지 않는다.
+// → 본 적을 sessionStorage에 적어 둔다. sessionStorage는 탭을 닫으면 지워지고, localStorage는 계속 남는다.
+//   (처음에는 localStorage를 썼더니 한 번 본 뒤로는 영영 안 나와서 바꿨다)
 // 주소 끝에 ?intro를 붙이면 다시 볼 수 있다(발표용).
 const SEEN_KEY = "ssikhive-intro-seen";
 const lines = [
@@ -20,7 +23,7 @@ const fullText = lines.join("\n");
 function shouldShow() {
     try {
         if (window.location.search.includes("intro")) return true;
-        return localStorage.getItem(SEEN_KEY) === null;
+        return sessionStorage.getItem(SEEN_KEY) === null;
     } catch (e) {
         return false;
     }
@@ -36,7 +39,7 @@ function Intro() {
 
     const close = () => {
         try {
-            localStorage.setItem(SEEN_KEY, "1");
+            sessionStorage.setItem(SEEN_KEY, "1");
         } catch (e) {}
         setLeaving(true);
         setTimeout(() => setVisible(false), 600); // 사라지는 애니메이션 시간과 맞춤
