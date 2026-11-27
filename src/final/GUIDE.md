@@ -209,6 +209,23 @@ FinalApp ─ 기본 9개(− hiddenIds로 숨긴 것, + edits로 고친 것) + c
 5. `Header.jsx`: `NavLink`의 `active`와 `end`, `Link`의 `state`
 6. `StagePage.jsx`: 고른 기록만 거르기, `useMemo`, `key`로 무대 다시 세우기, `paused`, 분야 이름 맞추기(`"all"` ↔ `"전체"`)
 
+### 수업에서 배운 것 → 이 사이트에서 쓴 곳 (발표의 뼈대)
+
+기준 (2026-11-27 결정: 본인): 수업에서 안 배운 문법을 써도 된다. AI를 쓴 만큼 완성도가 있으면 되고, **배운 내용을 어디에 적용했는지 잘 설명하는 것**이 중요하다.
+장별 주제는 저장소 수업 폴더의 예제 파일 이름으로 추정했다(Claude 작성) — 실제 수업 제목과 다르면 고칠 것.
+
+| 수업 (예제) | 배운 것 | SSIKHIVE에서 쓴 곳 |
+|---|---|---|
+| 03·05장 (Book, Welcome, Userinfo) | 컴포넌트와 props | `ReferenceCard`: 기록 하나를 props로 받아 카드 하나를 그림 |
+| 07장 (UseStateTest, UseEffectTest, TextInputWithFocusButton) | `useState`, `useEffect`, `useRef` | `FinalApp`의 state 전체 / `UndoToast`의 7초 타이머와 cleanup / `DetailModal`이 열릴 때 포커스 옮기기 |
+| 08장 (Toggle, ConfirmButton) | 이벤트 처리 | Dive in 버튼 토글, "정말 지울까요?" 확인 단계 |
+| 09장 (Greeting, LogInControl, WarningBanner) | 조건부 렌더링 | 수정 폼일 때만 "원래대로" 버튼, 링크가 있을 때만 "원본 보기", 기록이 없을 때 안내 문구 |
+| 10장 (AttendanceBook, MapTest) | 리스트와 key | 카드 목록 `map`, 필터 `filter`, `key`로 폼과 무대 새로 만들기 |
+| 11장 (NameForm, Reservation) | 폼, 제어 컴포넌트 | `AddEntryForm`: `value`/`onChange`, `handleChange` 하나로 모든 칸 처리, `preventDefault` |
+| 12장 (Calculator, TemperatureInput) | state 끌어올리기 | `savedIds`를 `FinalApp`에 두고 Archive·Stage·Header가 같이 씀 |
+| 13장 (Dialog, Card, FancyBorder) | 합성과 재사용 | `DetailModal` 하나를 Archive와 Stage에서 다르게 사용, `AddEntryForm` 하나로 추가와 수정 |
+| 14장 (ThemeContext) | Context | 다크/라이트 테마 |
+
 수업 범위 밖이라 "가져다 쓴 것"으로 설명해도 되는 부분:
 - `AddEntryForm.jsx`의 `shrinkImage`(FileReader·canvas로 사진 줄이기, Promise·async/await)
 - `utils/tilt.js`의 해시 계산(id 글자로 숫자 만들기), CSS 변수에 값을 넣는 `style={{ "--tilt": ... }}`
@@ -224,7 +241,7 @@ FinalApp ─ 기본 9개(− hiddenIds로 숨긴 것, + edits로 고친 것) + c
 | `useState`(31개 파일), `useEffect`(07·14장), `useRef`(07장), `createContext`/`useContext`(14장), `map`·`filter`, 폼(`onSubmit`·`preventDefault`, 11장), `setTimeout`·`setInterval`, 합성(13장) | `fetch`·`async/await`·`Promise`, `useMemo`·`useCallback`, `localStorage`·`sessionStorage`, FileReader·canvas, react-router-dom(`BrowserRouter`·`NavLink`·`Outlet`·`useLocation`·`Navigate`) |
 
 - react-router-dom은 수업 예제 폴더에는 없지만 과제 지침이 요구한 것이다.
-- `fetch`는 수업에서 다루지 않았다(본인 기억 + 위 검색 결과 일치). 링크 자동 채움은 과제 요건이 아니라 스스로 넣은 확장이므로, 보고서와 발표에서 "수업 밖에서 가져다 쓴 것"으로 밝힌다.
+- `fetch`는 수업에서 다루지 않았다(본인 기억 + 위 검색 결과 일치). 링크 자동 채움은 과제 요건이 아니라 스스로 넣은 확장이므로, 보고서와 발표에서 "수업 밖에서 가져다 쓴 것"으로 밝힌다. 기능은 그대로 두기로 했다(2026-11-27 결정: 본인).
 
 ## 9. 알려진 한계
 
