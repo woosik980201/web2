@@ -18,7 +18,7 @@ export const sections = [
     {
         key: "digging",
         title: "Digging Log",
-        description: "질감·빛·색·공간·소리를 관찰하며 모은 기록",
+        description: "References I dug up, and why they stayed.",
     },
 ];
 
