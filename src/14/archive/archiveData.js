@@ -14,8 +14,8 @@ import sa005a from "./images/SA-005_01.jpg";
 import sa005b from "./images/SA-005_02.jpg";
 import sa005c from "./images/SA-005_03.jpg";
 import sa006a from "./images/SA-006_06.jpg";
-import sa006b from "./images/SA-006_03.jpg";
-import sa006c from "./images/SA-006_07.jpg";
+import sa006b from "./images/SA-006_08.jpg";
+import sa006c from "./images/SA-006_09.jpg";
 import sa007a from "./images/SA-007_01.jpg";
 import sa007b from "./images/SA-007_02.jpg";
 import sa007c from "./images/SA-007_03.jpg";
@@ -104,8 +104,8 @@ const archiveEntries = [
         question: "사람마다 다르게 만든 작은 빛을 어떻게 배치하면 각자의 흔적과 하나의 공동 풍경이 함께 보일까?",
         images: [
             { src: sa006a, caption: "제단 앞에 모인 푸른빛과 따뜻한 등불" },
-            { src: sa006b, caption: "교회 내부 전경" },
-            { src: sa006c, caption: "좌석 사이의 등불" },
+            { src: sa006b, caption: "나무 사이 길에 걸린 등불" },
+            { src: sa006c, caption: "등불이 놓인 교회 돌계단" },
         ],
         x: 34, y: 72, w: 24, rot: 4,
     },
