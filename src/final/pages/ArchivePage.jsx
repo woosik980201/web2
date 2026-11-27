@@ -7,6 +7,7 @@ import ParamsPanel from "../components/common/ParamsPanel";
 import ReferenceSection from "../components/archive/ReferenceSection";
 import DetailModal from "../components/common/DetailModal";
 import AddEntryForm from "../components/archive/AddEntryForm";
+import UndoToast from "../components/common/UndoToast";
 
 // 페이지 1: Archive — 디깅한 레퍼런스를 모아 보고, 더 파고들 것을 Dive in으로 고르고, 열어서 기록을 읽는다
 // (모든 기록이 이미 "좋아서 모은 것"이라 ♥ 저장 대신 Dive in이라 부른다. 코드 안의 이름 savedIds는 그대로 둔다)
@@ -18,21 +19,36 @@ const views = [
     { value: "saved", label: "Dive in" },
 ];
 
-function ArchivePage({ references, savedIds, onToggleSave, onAddEntry, onDeleteEntry }) {
+// 기록은 상세 보기에서 지운다(한 번 더 묻고 → 지운 뒤 잠깐 "되돌리기"). 지운 기본 기록은 "지운 기록 되돌리기"로 전부 복구할 수 있다.
+function ArchivePage({
+    references,
+    savedIds,
+    onToggleSave,
+    onAddEntry,
+    onUpdateEntry,
+    onResetEntry,
+    onDeleteEntry,
+    lastDeleted,
+    onUndoDelete,
+    onDismissDeleted,
+    hiddenCount,
+    onRestoreHidden,
+}) {
     // 머리글의 dive in 숫자를 누르고 들어오면 "Dive in" 보기로 시작한다 (Link의 state로 전달됨)
     const location = useLocation();
     const [view, setView] = useState(location.state && location.state.view === "saved" ? "saved" : "all");
     const [domain, setDomain] = useState("all");
     const [query, setQuery] = useState("");
     const [openItem, setOpenItem] = useState(null);
-    const [adding, setAdding] = useState(false); // 추가 폼이 열려 있는지
-    const [newId, setNewId] = useState(null); // 방금 추가한 기록 (카드에 잠깐 표시)
+    const [adding, setAdding] = useState(false); // 새 기록 폼이 열려 있는지
+    const [editing, setEditing] = useState(null); // 고치는 중인 기록 (없으면 null)
+    const [flash, setFlash] = useState(null); // 방금 추가하거나 고친 기록 { id, label } — 카드에 잠깐 표시
 
-    // 폼에서 기록을 넘겨받아 App에 저장을 맡긴다. 성공하면 필터를 풀어 새 카드가 바로 보이게 한다.
-    function handleAdd(draft) {
-        const result = onAddEntry(draft);
+    // 폼에서 기록을 넘겨받아 App에 저장을 맡긴다. 성공하면 필터를 풀어 그 카드가 바로 보이게 한다.
+    function handleSubmit(fields) {
+        const result = editing ? onUpdateEntry(editing.id, fields) : onAddEntry(fields);
         if (result.id) {
-            setNewId(result.id);
+            setFlash({ id: result.id, label: editing ? "edited" : "new" });
             setView("all");
             setDomain("all");
             setQuery("");
@@ -40,12 +56,37 @@ function ArchivePage({ references, savedIds, onToggleSave, onAddEntry, onDeleteE
         return result;
     }
 
-    // 새 기록이 추가되면(화면에 그려진 뒤) 그 카드가 보이는 곳으로 스크롤한다
+    function closeForm() {
+        setAdding(false);
+        setEditing(null);
+    }
+
+    // 상세 보기의 "수정"을 누르면: 창을 닫고 그 기록 내용으로 채운 폼을 연다
+    function handleEdit(item) {
+        setOpenItem(null);
+        setAdding(false);
+        setEditing(item);
+    }
+
+    function handleReset() {
+        onResetEntry(editing.id);
+        setFlash({ id: editing.id, label: "reset" });
+        closeForm();
+    }
+
+    // 폼이 열리면 폼이 보이는 곳으로 스크롤한다
     useEffect(() => {
-        if (newId === null) return;
+        if (!adding && editing === null) return;
+        const form = document.querySelector(".add-form");
+        if (form) form.scrollIntoView({ block: "start", behavior: "smooth" });
+    }, [adding, editing]);
+
+    // 기록을 추가하거나 고치면(화면에 그려진 뒤) 그 카드가 보이는 곳으로 스크롤한다
+    useEffect(() => {
+        if (flash === null) return;
         const card = document.querySelector(".ref-card.is-new");
         if (card) card.scrollIntoView({ block: "center", behavior: "smooth" });
-    }, [newId]);
+    }, [flash]);
 
     function handleDelete(id) {
         onDeleteEntry(id);
@@ -83,9 +124,14 @@ function ArchivePage({ references, savedIds, onToggleSave, onAddEntry, onDeleteE
                         value={query}
                         onChange={(event) => setQuery(event.target.value)}
                     />
-                    {!adding && (
+                    {!adding && editing === null && (
                         <button type="button" className="stamp add-open" onClick={() => setAdding(true)}>
                             ＋ New entry
+                        </button>
+                    )}
+                    {hiddenCount > 0 && (
+                        <button type="button" className="restore-link" onClick={onRestoreHidden}>
+                            지운 기록 {hiddenCount}개 되돌리기
                         </button>
                     )}
                 </div>
@@ -109,7 +155,28 @@ function ArchivePage({ references, savedIds, onToggleSave, onAddEntry, onDeleteE
                 </p>
             )}
 
-            {adding && <AddEntryForm onAdd={handleAdd} onClose={() => setAdding(false)} />}
+            {(adding || editing) && (
+                // key: 다른 기록을 고치러 가면 폼을 새로 만들어 칸을 그 기록 내용으로 다시 채운다
+                <AddEntryForm
+                    key={editing ? editing.id : "new"}
+                    initial={
+                        editing && {
+                            id: editing.id,
+                            domain: editing.domain,
+                            title: editing.title,
+                            credits: editing.description,
+                            url: editing.link || "",
+                            captured: editing.archive.captured,
+                            why: editing.archive.why,
+                            question: editing.archive.question || "",
+                            images: editing.images,
+                        }
+                    }
+                    onSubmit={handleSubmit}
+                    onReset={editing && editing.edited ? handleReset : undefined}
+                    onClose={closeForm}
+                />
+            )}
 
             {visibleSections.map((group, index) => (
                 <ReferenceSection
@@ -120,7 +187,7 @@ function ArchivePage({ references, savedIds, onToggleSave, onAddEntry, onDeleteE
                     savedIds={savedIds}
                     onToggleSave={onToggleSave}
                     onOpen={setOpenItem}
-                    newId={newId}
+                    flash={flash}
                 />
             ))}
 
@@ -129,7 +196,15 @@ function ArchivePage({ references, savedIds, onToggleSave, onAddEntry, onDeleteE
                     item={openItem}
                     onClose={() => setOpenItem(null)}
                     showStageLink
-                    onDelete={openItem.custom ? handleDelete : undefined}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                />
+            )}
+            {lastDeleted && (
+                <UndoToast
+                    message={lastDeleted.id + " " + lastDeleted.title + " — 지웠어요"}
+                    onUndo={onUndoDelete}
+                    onDismiss={onDismissDeleted}
                 />
             )}
         </>

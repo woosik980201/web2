@@ -45,6 +45,7 @@ export function toReference(entry) {
         rights: entry.rights.includes("Public Domain") ? "public-domain" : "unverified",
         rightsNote: entry.rights, // 시트에 적힌 원래 문구
         custom: entry.custom === true, // 이 페이지에서 직접 추가한 기록인지
+        edited: entry.edited === true, // 기본 기록을 이 브라우저에서 고쳤는지
         // 내가 직접 쓴 문장만 (시트의 why_drawn · digging_question)
         archive: { why: entry.why, question: entry.question, captured: entry.captured },
     };

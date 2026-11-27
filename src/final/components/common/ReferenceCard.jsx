@@ -11,8 +11,8 @@ import { tiltOf, offsetOf } from "../../utils/tilt";
 // activeLabel, inactiveLabel : 상태에 따른 버튼 글자
 // onAction    : 버튼을 누르면 item.id를 넘겨 부른다
 // onOpen      : (선택) 카드를 누르면 상세 보기를 연다. 없으면 카드 본문은 눌리지 않는다
-// isNew       : 방금 추가된 기록인지 (잠깐 강조하고 new 표시를 붙인다)
-function ReferenceCard({ item, isActive, activeLabel, inactiveLabel, onAction, onOpen, isNew }) {
+// flag        : (선택) 방금 추가하거나 고친 기록에 붙일 표시 글자 ("new", "edited"). 잠깐 강조도 된다
+function ReferenceCard({ item, isActive, activeLabel, inactiveLabel, onAction, onOpen, flag }) {
     // 콜라주 느낌: 카드마다 조금씩 다른 기울기와 높이 (id로 정해서 새로고침해도 같음)
     const style = {
         "--tilt": tiltOf(item.id, 3) + "deg",
@@ -43,10 +43,10 @@ function ReferenceCard({ item, isActive, activeLabel, inactiveLabel, onAction, o
 
     return (
         <article
-            className={"paper ref-card" + (isActive ? " is-active" : "") + (isNew ? " is-new" : "")}
+            className={"paper ref-card" + (isActive ? " is-active" : "") + (flag ? " is-new" : "")}
             style={style}
         >
-            {isNew && <span className="new-flag">new</span>}
+            {flag && <span className="new-flag">{flag}</span>}
             <span className="port in" aria-hidden="true" />
             <span className="port out" aria-hidden="true" />
 

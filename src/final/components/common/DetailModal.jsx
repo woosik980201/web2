@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import NodeTag from "./NodeTag";
 import { rights } from "../../data/references";
@@ -9,9 +9,11 @@ import { rights } from "../../data/references";
 // item          : 레퍼런스 한 건
 // onClose       : 닫기 (×, 바깥 클릭, ESC)
 // showStageLink : true면 "무대에서 보기" 버튼을 보여 준다 (Stage 안에서는 필요 없음)
-// onDelete      : (선택) 넘겨주면 "기록 지우기" 버튼이 생긴다. 직접 추가한 기록에만 넘긴다
-function DetailModal({ item, onClose, showStageLink, onDelete }) {
+// onEdit        : (선택) 넘겨주면 "수정" 버튼이 생긴다
+// onDelete      : (선택) 넘겨주면 "기록 지우기" 버튼이 생긴다. 누르면 한 번 더 묻고 지운다
+function DetailModal({ item, onClose, showStageLink, onEdit, onDelete }) {
     const closeRef = useRef(null);
+    const [confirming, setConfirming] = useState(false); // "정말 지울까요?"를 보여 주는 중인지
 
     // 열릴 때: 키보드 포커스를 창 안(닫기 버튼)으로 옮기고, 뒤 페이지가 같이 스크롤되지 않게 막는다.
     // 닫힐 때(cleanup): 스크롤을 풀고, 창을 열기 전에 포커스가 있던 곳(누른 카드)으로 돌려준다.
@@ -77,10 +79,20 @@ function DetailModal({ item, onClose, showStageLink, onDelete }) {
                         {showStageLink && (
                             <Link className="tab" to="/stage">무대에서 보기 →</Link>
                         )}
-                        {onDelete && (
-                            <button type="button" className="tab danger" onClick={() => onDelete(item.id)}>
+                        {onEdit && !confirming && (
+                            <button type="button" className="tab" onClick={() => onEdit(item)}>수정</button>
+                        )}
+                        {onDelete && !confirming && (
+                            <button type="button" className="tab danger" onClick={() => setConfirming(true)}>
                                 기록 지우기
                             </button>
+                        )}
+                        {onDelete && confirming && (
+                            <span className="confirm-delete" role="group" aria-label="지우기 확인">
+                                <span>정말 지울까요?</span>
+                                <button type="button" className="stamp" onClick={() => onDelete(item.id)}>지우기</button>
+                                <button type="button" className="tab" onClick={() => setConfirming(false)}>취소</button>
+                            </span>
                         )}
                     </div>
                 </div>

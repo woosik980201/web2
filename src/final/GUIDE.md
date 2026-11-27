@@ -52,7 +52,7 @@ src/final/
 ├─ data/references.js      SA 레퍼런스(14장 archiveData를 import해 변환), 섹션 1개, 분야 5개, 권리 상태
 ├─ components/
 │  ├─ layout/   Layout(틀) · Header · Footer(세 칸) · Intro(첫 방문 인트로)   ← 두 페이지 공통
-│  ├─ common/   FilterChips · ReferenceCard · DetailModal · NodeTag · ParamsPanel   ← 여러 곳에서 공통
+│  ├─ common/   FilterChips · ReferenceCard · DetailModal · NodeTag · ParamsPanel · UndoToast   ← 여러 곳에서 공통
 │  └─ archive/  Hero · ReferenceSection · AddEntryForm(새 기록 폼)
 ├─ pages/  ArchivePage · StagePage
 └─ assets/ hero.jpg — Higgsfield 생성형 이미지(2026-11-26, 1600px로 줄임) · intro.mp4 — Higgsfield 생성형 영상. SA 이미지는 src/14/archive/images를 그대로 씀
@@ -87,14 +87,25 @@ src/final/
 - 이미지: 파일 올리기(브라우저에서 긴 변 900px JPG로 줄여 저장) 또는 이미지 주소. 기록당 3장까지
 - 저장 위치: 이 브라우저의 `localStorage`(`ssikhive-entries`). **구글 시트는 읽지도 쓰지도 않는다**(시트 읽기 전용 원칙 유지)
 - 번호는 자동(`nextId`: 가장 큰 번호 + 1 → SA-010), 무대 위치도 자동(`stageSpotFor`: 기존 조각을 피한 빈자리 6곳)
-- 직접 추가한 기록만 상세 보기에서 지울 수 있다. 기본 9개는 14장 데이터라 지우지 않는다
+- 고치기 (2026-11-27 요청: 본인 — "수정 기능도 넣어줘"):
+  - 상세 보기의 "수정" → 그 기록 내용이 채워진 폼이 열린다. **새 기록 폼과 같은 컴포넌트**(`AddEntryForm`)에 `initial` props만 넘긴 것
+  - 직접 추가한 기록은 저장 목록에서 바꿔 넣는다. 기본 9개는 고친 칸만 `edits`(`ssikhive-edits`)에 따로 저장해 화면에서 덮어쓴다 (14장 데이터 파일은 그대로)
+  - 고친 기본 기록은 수정 폼의 "원래대로"로 처음 내용으로 돌아간다
+  - 고친 내용은 Stage의 상세 보기에도 그대로 나온다 (같은 entries를 쓰므로)
+  - 저장하면 그 카드로 스크롤하고 `edited` 표시가 잠깐 붙는다 (추가할 때의 `new` 표시와 같은 장치: `flag` props)
+- 지우기 (2026-11-27 결정: 본인 — "삭제 기능도 있으면 좋겠다", 기본 9개도 지울 수 있게, 확인과 되돌리기 둘 다):
+  - 상세 보기의 "기록 지우기" → "정말 지울까요? 지우기 / 취소"로 한 번 더 묻는다 (`DetailModal`의 `confirming` state)
+  - 지운 직후 화면 아래에 7초 동안 "되돌리기"가 뜬다 (`UndoToast`, `setTimeout` + cleanup)
+  - 직접 추가한 기록은 저장 목록에서 실제로 빠진다. 기본 9개는 14장 데이터 파일을 건드리지 않고 `hiddenIds`(`ssikhive-hidden`)에 넣어 이 브라우저 화면에서만 숨긴다
+  - 숨긴 기본 기록은 필터 아래 "지운 기록 N개 되돌리기"로 언제든 전부 복구된다 → 발표 중 실수해도 원래대로
+  - 지운 기록은 Stage 무대와 Dive in 목록에서도 함께 빠지고, 되돌리면 Dive in 상태까지 돌아온다
 - 한계: 다른 컴퓨터·브라우저에서는 안 보인다. 저장 공간이 약 5MB라 사진이 많으면 가득 찬다(가득 차면 안내하고 추가하지 않음). 진짜로 어디서나 보이게 하려면 서버·DB가 필요하다 — 이번 과제 범위 밖
 
 ## 5. 데이터와 state가 흐르는 길
 
 ```
-FinalApp ─ customEntries(직접 추가한 기록) + 기본 9개 = entries → references
-         ─ addEntry / deleteEntry → ArchivePage → AddEntryForm · DetailModal(지우기)
+FinalApp ─ 기본 9개(− hiddenIds로 숨긴 것, + edits로 고친 것) + customEntries(직접 추가한 기록) = entries → references
+         ─ addEntry / updateEntry / resetEntry / deleteEntry / undoDelete / restoreHidden → ArchivePage → AddEntryForm · DetailModal(지우기 확인) · UndoToast(되돌리기)
          ─ savedIds, toggleSave ─┬─ Layout → Header (dive in 개수, 누르면 "Dive in" 보기)
          ─ theme (Context) ──────┤
                                  ├─ ArchivePage → ReferenceSection → ReferenceCard (＋ Dive in = toggleSave)
@@ -118,7 +129,8 @@ FinalApp ─ customEntries(직접 추가한 기록) + 기본 9개 = entries → 
 
 | 컴포넌트 | 쓰이는 곳 | 바뀌는 것 (props) |
 |---|---|---|
-| `DetailModal` | Archive 카드 클릭, Stage의 Enter·클릭 | `item`, `onClose`, `showStageLink` |
+| `DetailModal` | Archive 카드 클릭, Stage의 Enter·클릭 | `item`, `onClose`, `showStageLink`, `onEdit`, `onDelete` (Stage에서는 수정·지우기 없음) |
+| `AddEntryForm` | 새 기록 추가, 있는 기록 수정 | `initial`, `onSubmit`, `onReset` |
 | `FilterChips` | Archive 보기(전체/Dive in)·분야, Stage 보기(Dive in/전체)·분야 (4곳) | `options`, `value`, `onChange` |
 | `ReferenceSection` | Archive의 섹션 (지금은 Digging Log 하나) | `section`, `items` |
 | `ReferenceCard` | 모든 섹션의 카드 | `activeLabel`/`inactiveLabel`, `onAction`, `onOpen`, `compact` |
@@ -170,7 +182,7 @@ FinalApp ─ customEntries(직접 추가한 기록) + 기본 9개 = entries → 
 ## 8. 직접 설명할 수 있어야 하는 부분 (우선순위)
 
 1. `FinalApp.jsx`: `Routes`/`Route`의 중첩, `Layout`의 `<Outlet />`, `index` 라우트, `Navigate`, `path="*"`
-2. `AddEntryForm.jsx`: 제어 컴포넌트(`value`/`onChange`), `event.preventDefault()`, 빈 값 검사, 부모로 값 올려 보내기(`onAdd`)
+2. `AddEntryForm.jsx`: 제어 컴포넌트(`value`/`onChange`), `event.preventDefault()`, 빈 값 검사, 부모로 값 올려 보내기(`onSubmit`), `initial` props 하나로 추가·수정 두 가지 일을 하는 방법, `key`로 폼 새로 만들기
 2-1. `ArchivePage.jsx`: 조건 세 개를 합친 `filter`, 비어 있는 섹션을 거르는 `map` → `filter`, `useLocation`으로 받은 state
 3. `DetailModal.jsx`: `useEffect` cleanup, `stopPropagation`, `showStageLink`로 같은 컴포넌트를 두 곳에서 다르게 쓰기, `useRef`로 열릴 때 포커스를 창 안으로 옮기고 닫힐 때 누른 카드로 돌려주기, 뒤 페이지 스크롤 막기
 4. `ReferenceCard.jsx`: 데이터 하나로 카드 하나를 그리는 방법, `aria-pressed`
@@ -201,6 +213,8 @@ FinalApp ─ customEntries(직접 추가한 기록) + 기본 9개 = entries → 
 | 2026-11-26 | Claude | SENSORY ARCHIVE와 통일된 디자인 시스템 | 기존 CSS 분석, 토큰 파일, 공통 컴포넌트 재디자인 | (기록할 것) | 1학기 디자인 폐기, 사이트 이름·종이 테마·콜라주 무게 결정 |
 | 2026-11-26 | Claude | 레퍼런스·링크·이미지 최신화 | archiveData 확인, 데이터 구조 | (기록할 것) | hero는 생성형 이미지라고 알려 줌 |
 | 2026-11-26 | Claude | 내 브라우저로 화면 점검, Hero 교체 | 좁은 화면 Hero·무대 패널·탭 제목 지적과 수정, SA 이미지 콜라주 Hero | (기록할 것) | 고칠 것 승인, SA 콜라주는 중복돼 보인다고 판단 → Higgsfield·Midjourney 후보 8장 중 Higgsfield 1번 선택 |
+| 2026-11-27 | Claude | 기록 수정 | 추가 폼을 수정에도 쓰도록 확장, 기본 기록은 덮어쓰기(edits)·원래대로 구현 | (기록할 것) | 수정 기능 요청 |
+| 2026-11-27 | Claude | 기록 삭제 넓히기 | 범위·확인 방식 선택지 제안, 숨기기(hiddenIds)·확인·되돌리기·전체 복구 구현 | (기록할 것) | 삭제 기능 요청, 기본 9개도 삭제 가능·확인과 되돌리기 둘 다 넣기로 결정 |
 | 2026-11-26 | Claude | 페이지에서 바로 기록 추가 | 방식 3가지 비교, 추가 폼·저장·번호·무대 위치·지우기 구현 | (기록할 것) | 아이디어 제안("시트 작업을 페이지에서 바로, 디깅 로그에 실시간 추가"), 페이지 안 저장·이미지 파일+주소 둘 다 선택 |
 | 2026-11-26 | Claude | 전체 점검과 수정 | 화면·코드·과제 요건 점검표, 다크 모드 대비, 남은 코드 정리(compact·label·generated), 상세 보기 포커스·스크롤, 인트로 ESC·키 막기, 섹션 라벨 Index | (기록할 것) | 점검 요청, "고칠 것 다 고치고 추가하면 좋은 것도 추가" 결정 |
 | 2026-11-26 | Claude | 인트로 영상 | Higgsfield(Seedance 2.5)로 6초 영상 시안 6개 생성·여백 자르기·압축·연결, GPT에 넘길 진행 상황 정리, 와이어프레임 전환 프롬프트 작성 | (기록할 것) | 인트로를 영상으로 만들자고 제안, 2차 프롬프트는 GPT와 직접 작성, "Stage와 안 어울린다" 지적 후 와이어프레임 버전 선택 |

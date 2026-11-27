@@ -332,6 +332,14 @@ html { scroll-behavior: smooth; }
 .add-message { margin: 0; font-size: 14px; color: var(--brown); }
 .ssik-app .tab.danger { border-color: var(--line); color: var(--muted); }
 
+/* 지우기: 확인 묶음 · 지운 뒤 되돌리기 안내 · 숨긴 기록 되돌리기 */
+.confirm-delete { display: inline-flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; font-size: 14px; }
+.restore-link { align-self: flex-start; min-height: 32px; padding: 0; border: 0; background: none; color: var(--brown); font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+.restore-link:hover { color: var(--ink); }
+.toast { position: fixed; left: 50%; bottom: var(--space-6); z-index: 60; transform: translateX(-50%); display: flex; align-items: center; gap: var(--space-4); max-width: calc(100vw - 2 * var(--space-4)); padding: var(--space-3) var(--space-4); background: var(--ink); color: var(--paper); font-size: 14px; box-shadow: var(--shadow-lift); }
+.toast button { min-height: 32px; padding: 0 var(--space-2); border: 1px solid var(--paper); background: none; color: var(--paper); font-size: 14px; white-space: nowrap; }
+.toast button:hover { background: var(--paper); color: var(--ink); }
+
 /* 방금 추가한 카드: 연두 표시 + 한 번 내려앉는 움직임 */
 .new-flag { position: absolute; top: calc(-1 * var(--space-2)); left: var(--space-3); z-index: 3; padding: 1px 8px; background: var(--live); color: var(--stamp-ink); font-family: var(--font-mono); font-size: var(--text-meta); }
 .ref-card.is-new { animation: drop-in 0.7s ease; }

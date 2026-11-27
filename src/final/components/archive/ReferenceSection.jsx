@@ -10,8 +10,8 @@ import ReferenceCard from "../common/ReferenceCard";
 // items       : 이 섹션에 보일 레퍼런스들 (이미 필터를 거친 것)
 // savedIds    : 저장한 레퍼런스 id 목록
 // onToggleSave, onOpen : 카드에 그대로 넘겨 줄 함수
-// newId       : 방금 추가한 기록의 id (그 카드에 new 표시)
-function ReferenceSection({ section, index, items, savedIds, onToggleSave, onOpen, newId }) {
+// flash       : 방금 추가하거나 고친 기록 { id, label } (그 카드에 new / edited 표시)
+function ReferenceSection({ section, index, items, savedIds, onToggleSave, onOpen, flash }) {
     return (
         <section id={section.key} className={"section section-" + section.key}>
             <div className="section-head">
@@ -33,7 +33,7 @@ function ReferenceSection({ section, index, items, savedIds, onToggleSave, onOpe
                         inactiveLabel="＋ Dive in"
                         onAction={onToggleSave}
                         onOpen={onOpen}
-                        isNew={item.id === newId}
+                        flag={flash && flash.id === item.id ? flash.label : undefined}
                     />
                 ))}
             </div>

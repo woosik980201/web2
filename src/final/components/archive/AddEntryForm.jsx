@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { domains } from "../../data/references";
 
-// 새 레퍼런스 기록 폼. 구글 시트(References 탭)에 적던 칸을 그대로 옮겼다.
-// 시트는 건드리지 않고, 적은 기록은 이 브라우저(localStorage)에만 남는다.
+// 레퍼런스 기록 폼. 새 기록을 적을 때와 있는 기록을 고칠 때 같은 폼을 쓴다.
+// 구글 시트(References 탭)에 적던 칸을 그대로 옮겼다. 시트는 건드리지 않고, 내용은 이 브라우저(localStorage)에만 남는다.
 //
-// onAdd(entry) : 폼 내용을 App에 넘긴다. App이 번호(SA-010…)와 무대 위치를 붙여 저장하고,
-//                성공하면 { id }, 저장 공간이 부족하면 { error }를 돌려준다.
-// onClose      : 폼 닫기
+// initial        : (선택) 고칠 기록. 넘겨주면 그 내용으로 칸을 채운 "수정" 폼이 되고, 없으면 "새 기록" 폼이다
+// onSubmit(fields): 폼 내용을 부모에게 넘긴다. 부모가 저장하고, 성공하면 { id }, 실패하면 { error }를 돌려준다
+// onReset        : (선택) 넘겨주면 "원래대로" 버튼이 생긴다 (기본 기록을 고친 적이 있을 때)
+// onClose        : 폼 닫기
 
 const MAX_IMAGES = 3;
 const MAX_SIDE = 900; // 올린 사진은 긴 변 900px로 줄여서 저장한다 (브라우저 저장 공간이 작아서)
@@ -42,9 +43,23 @@ function shrinkImage(file) {
 
 const emptyForm = { domain: "film", title: "", credits: "", url: "", captured: today(), why: "", question: "" };
 
-function AddEntryForm({ onAdd, onClose }) {
-    const [form, setForm] = useState(emptyForm);
-    const [images, setImages] = useState([]); // [{ src, caption }]
+function AddEntryForm({ initial, onSubmit, onReset, onClose }) {
+    const editing = Boolean(initial);
+    // 처음 값: 수정이면 그 기록의 내용, 새 기록이면 빈칸. (useState의 처음 값은 폼이 처음 그려질 때 한 번만 쓰인다)
+    const [form, setForm] = useState(
+        editing
+            ? {
+                  domain: initial.domain,
+                  title: initial.title,
+                  credits: initial.credits,
+                  url: initial.url,
+                  captured: initial.captured,
+                  why: initial.why,
+                  question: initial.question,
+              }
+            : emptyForm
+    );
+    const [images, setImages] = useState(editing ? initial.images : []); // [{ src, caption }]
     const [imageUrl, setImageUrl] = useState("");
     const [message, setMessage] = useState("");
 
@@ -87,7 +102,7 @@ function AddEntryForm({ onAdd, onClose }) {
             setMessage("제목과 '왜 끌렸나'는 꼭 적어 주세요 — 이 아카이브의 핵심이에요.");
             return;
         }
-        const result = onAdd({
+        const result = onSubmit({
             domain: form.domain,
             title: form.title.trim(),
             credits: form.credits.trim() || "—",
@@ -95,9 +110,7 @@ function AddEntryForm({ onAdd, onClose }) {
             captured: form.captured.trim() || today(),
             why: form.why.trim(),
             question: form.question.trim(),
-            rights: "권리 미확인 (직접 추가)",
             images,
-            custom: true,
         });
         if (result.error) {
             setMessage(result.error);
@@ -115,8 +128,10 @@ function AddEntryForm({ onAdd, onClose }) {
     return (
         <form className="paper add-form" onSubmit={handleSubmit}>
             <div className="add-form-head">
-                <h2>New entry</h2>
-                <p className="meta">시트에 적던 칸 그대로 · 이 브라우저에만 저장돼요</p>
+                <h2>{editing ? "Edit " + initial.id : "New entry"}</h2>
+                <p className="meta">
+                    {editing ? "고친 내용은 이 브라우저에만 저장돼요" : "시트에 적던 칸 그대로 · 이 브라우저에만 저장돼요"}
+                </p>
             </div>
 
             <div className="add-grid">
@@ -189,8 +204,11 @@ function AddEntryForm({ onAdd, onClose }) {
             {message && <p className="add-message" role="alert">{message}</p>}
 
             <div className="actions">
-                <button type="submit" className="stamp">Add to Digging Log ↓</button>
+                <button type="submit" className="stamp">{editing ? "Save changes" : "Add to Digging Log ↓"}</button>
                 <button type="button" className="tab" onClick={onClose}>취소</button>
+                {onReset && (
+                    <button type="button" className="tab danger" onClick={onReset}>원래대로</button>
+                )}
             </div>
         </form>
     );
