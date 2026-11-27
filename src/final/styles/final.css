@@ -317,7 +317,9 @@ html { scroll-behavior: smooth; }
     font: inherit;
     font-size: 16px;
 }
-.field textarea { resize: vertical; line-height: 1.6; }
+.field textarea { resize: none; overflow: hidden; line-height: 1.6; } /* 높이는 내용에 맞춰 자동으로 (AddEntryForm) */
+/* 기록에 적은 줄바꿈을 상세 보기에서도 그대로 보여 준다 */
+.archive-note p:not(.meta) { white-space: pre-line; }
 .field input:focus, .field select:focus, .field textarea:focus, .image-url:focus { border-bottom-color: var(--ink); outline: none; }
 .field select option { color: var(--ink); background: var(--card); }
 .add-thumbs { display: flex; gap: var(--space-3); flex-wrap: wrap; list-style: none; padding: 0; margin: var(--space-2) 0; }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { domains } from "../../data/references";
 
 // 레퍼런스 기록 폼. 새 기록을 적을 때와 있는 기록을 고칠 때 같은 폼을 쓴다.
@@ -63,6 +63,18 @@ function AddEntryForm({ initial, onSubmit, onReset, onClose }) {
     const [imageUrl, setImageUrl] = useState("");
     const [message, setMessage] = useState("");
 
+    // 여러 줄 칸의 높이를 내용에 딱 맞춘다. 고정 높이(rows)면 글 아래에 지울 수 없는 빈 줄처럼 보이는 공간이 남는다.
+    // 높이를 잠깐 auto로 풀었다가, 내용 전체 높이(scrollHeight)만큼으로 다시 잡는다. 글이 바뀔 때마다 실행.
+    const whyRef = useRef(null);
+    const questionRef = useRef(null);
+    useEffect(() => {
+        [whyRef.current, questionRef.current].forEach((box) => {
+            if (!box) return;
+            box.style.height = "auto";
+            box.style.height = box.scrollHeight + "px";
+        });
+    }, [form.why, form.question]);
+
     // 입력칸 하나를 바꾸는 함수 하나로 모든 칸을 다룬다 (name 속성 = form의 키)
     function handleChange(event) {
         const { name, value } = event.target;
@@ -96,6 +108,13 @@ function AddEntryForm({ initial, onSubmit, onReset, onClose }) {
         setImages((previous) => previous.filter((_, i) => i !== index));
     }
 
+    // 한 줄짜리 입력칸에서 Enter(Shift+Enter 포함)를 눌러도 폼이 저장되지 않게 막는다.
+    // 브라우저는 원래 input에서 Enter를 누르면 폼을 제출한다 → 적는 도중에 실수로 저장되는 일이 생겼다.
+    // 저장은 "Add / Save" 버튼으로만 한다. 여러 줄 칸(textarea)의 Enter는 줄바꿈이라 그대로 둔다.
+    function handleKeyDown(event) {
+        if (event.key === "Enter" && event.target.tagName === "INPUT") event.preventDefault();
+    }
+
     function handleSubmit(event) {
         event.preventDefault(); // 폼 제출 때 페이지가 새로고침되지 않게
         if (form.title.trim() === "" || form.why.trim() === "") {
@@ -126,7 +145,7 @@ function AddEntryForm({ initial, onSubmit, onReset, onClose }) {
     const canAddImage = images.length < MAX_IMAGES;
 
     return (
-        <form className="paper add-form" onSubmit={handleSubmit}>
+        <form className="paper add-form" onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
             <div className="add-form-head">
                 <h2>{editing ? "Edit " + initial.id : "New entry"}</h2>
                 <p className="meta">
@@ -161,11 +180,11 @@ function AddEntryForm({ initial, onSubmit, onReset, onClose }) {
                 </label>
                 <label className="field wide">
                     <span>Why it caught me *</span>
-                    <textarea name="why" value={form.why} onChange={handleChange} rows={3} placeholder="왜 끌렸는지, 내 말로" />
+                    <textarea ref={whyRef} name="why" value={form.why} onChange={handleChange} rows={1} placeholder="왜 끌렸는지, 내 말로" />
                 </label>
                 <label className="field wide">
                     <span>Next question</span>
-                    <input name="question" value={form.question} onChange={handleChange} placeholder="다음에 파고들 질문" />
+                    <textarea ref={questionRef} name="question" value={form.question} onChange={handleChange} rows={1} placeholder="다음에 파고들 질문" />
                 </label>
             </div>
 
