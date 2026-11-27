@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { normalizeDomain } from "../../data/references";
+import ImageViewer from "../common/ImageViewer";
 
 // 레퍼런스 기록 폼. 새 기록을 적을 때와 있는 기록을 고칠 때 같은 폼을 쓴다.
 // 구글 시트(References 탭)에 적던 칸을 그대로 옮겼다. 시트는 건드리지 않고, 내용은 이 브라우저(localStorage)에만 남는다.
@@ -91,6 +92,7 @@ function AddEntryForm({ domains, initial, onSubmit, onReset, onClose }) {
     const [domainOpen, setDomainOpen] = useState(false); // 분야 목록이 열려 있는지
     const [linkInfo, setLinkInfo] = useState(null); // 링크에서 불러온 정보: { status: "loading" | "done" | "failed", title, author, thumb, thumbFallback }
     const [dragOver, setDragOver] = useState(false); // 이미지를 끌어서 칸 위에 올려 둔 상태인지
+    const [viewing, setViewing] = useState(null); // 크게 보고 있는 이미지 번호. 안 보고 있으면 null
 
     // 링크 자동 채움. Link 칸의 주소가 바뀔 때마다 실행된다.
     // - 수정 폼을 열자마자 불러오지 않도록, 이미 확인한 주소(checkedUrl)와 같으면 건너뛴다
@@ -290,6 +292,7 @@ function AddEntryForm({ domains, initial, onSubmit, onReset, onClose }) {
     const thumbUsed = Boolean(linkInfo && linkInfo.thumb) && images.some((image) => image.src === linkInfo.thumb);
 
     return (
+        <>
         <form className="paper add-form" onSubmit={handleSubmit} onKeyDown={handleKeyDown} onPaste={handlePaste}>
             <div className="add-form-head">
                 <h2>{editing ? "Edit " + initial.id : "New entry"}</h2>
@@ -397,8 +400,10 @@ function AddEntryForm({ domains, initial, onSubmit, onReset, onClose }) {
                     <ul className="add-thumbs">
                         {images.map((image, index) => (
                             <li key={index}>
-                                <img src={image.src} alt={image.caption} />
-                                <button type="button" onClick={() => removeImage(index)} aria-label={image.caption + " 빼기"}>×</button>
+                                <button type="button" className="thumb-open" onClick={() => setViewing(index)} aria-label={image.caption + " 크게 보기"}>
+                                    <img src={image.src} alt={image.caption} />
+                                </button>
+                                <button type="button" className="thumb-remove" onClick={() => removeImage(index)} aria-label={image.caption + " 빼기"}>×</button>
                             </li>
                         ))}
                     </ul>
@@ -434,6 +439,12 @@ function AddEntryForm({ domains, initial, onSubmit, onReset, onClose }) {
                 )}
             </div>
         </form>
+
+        {/* 크게 보기는 폼 바깥에 둔다: 화면 전체를 덮어야 하고, 안에서 누른 키·클릭이 폼에 전달되지 않게 */}
+        {viewing !== null && (
+            <ImageViewer images={images} index={viewing} onChange={setViewing} onClose={() => setViewing(null)} />
+        )}
+        </>
     );
 }
 

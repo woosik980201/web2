@@ -333,7 +333,17 @@ html { scroll-behavior: smooth; }
 .add-thumbs { display: flex; gap: var(--space-3); flex-wrap: wrap; list-style: none; padding: 0; margin: var(--space-2) 0; }
 .add-thumbs li { position: relative; width: 96px; }
 .add-thumbs img { display: block; width: 96px; height: 96px; object-fit: cover; filter: none; }
-.add-thumbs button { position: absolute; top: 0; right: 0; width: 28px; height: 28px; border: 0; background: var(--ink); color: var(--paper); font-size: 16px; line-height: 1; }
+.add-thumbs .thumb-open { display: block; width: 96px; height: 96px; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.add-thumbs .thumb-open:hover img { opacity: 0.85; }
+.add-thumbs .thumb-remove { position: absolute; top: 0; right: 0; width: 28px; height: 28px; border: 0; background: var(--ink); color: var(--paper); font-size: 16px; line-height: 1; }
+/* 이미지 크게 보기 (ImageViewer) — 인트로와 같은 어두운 바탕 색을 쓴다 */
+.viewer { position: fixed; inset: 0; z-index: 70; display: flex; align-items: center; justify-content: center; gap: var(--space-4); padding: var(--space-6) var(--space-4); background: var(--viewer-veil); cursor: zoom-out; }
+.viewer figure { flex: 1; margin: 0; display: grid; gap: var(--space-3); justify-items: center; min-width: 0; }
+.viewer img { display: block; max-width: min(1200px, 100%); max-height: calc(100vh - 140px); object-fit: contain; filter: none; box-shadow: var(--shadow-lift); }
+.viewer figcaption { font-family: var(--font-mono); font-size: var(--text-meta); color: var(--intro-muted); }
+.viewer .viewer-close, .viewer .viewer-step { flex: none; width: 44px; height: 44px; border: 1px solid var(--intro-muted); background: none; color: var(--intro-text); font-size: 20px; line-height: 1; }
+.viewer-close { position: absolute; top: var(--space-4); right: var(--space-4); }
+.viewer-close:hover, .viewer-step:hover { border-color: var(--intro-text); }
 .add-image-row { display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; }
 .add-image-row .image-url { flex: 1; min-width: 200px; }
 /* 링크에서 불러온 정보 한 줄 (AddEntryForm) */
