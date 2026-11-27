@@ -388,7 +388,6 @@ html { scroll-behavior: smooth; }
 .archive-note { margin: 0 0 var(--space-4); padding: var(--space-3) 0; border-top: 1px dashed var(--line); border-bottom: 1px dashed var(--line); }
 .archive-note p:not(.meta) { font-size: 14px; line-height: 1.75; margin: var(--space-1) 0 var(--space-3); }
 .archive-note .question { padding-left: var(--space-3); border-left: 3px solid var(--tape); }
-.rights-line { margin-bottom: var(--space-4); }
 .modal-sheet h3 { font-size: 22px; letter-spacing: -0.03em; margin: var(--space-2) 0; }
 .modal-desc { font-size: 14px; line-height: 1.7; color: var(--muted); margin: 0 0 var(--space-5); }
 .modal-close { position: absolute; top: var(--space-2); right: var(--space-2); z-index: 3; width: 44px; height: 44px; border: 0; background: var(--card); font-size: 24px; }

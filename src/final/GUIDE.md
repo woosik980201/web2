@@ -76,7 +76,7 @@ src/final/
 - SA-010을 archiveData.js에 추가하면 references.js는 고치지 않아도 Archive·Stage에 함께 나온다.
 - 섹션 구조(`sections` 배열 + `ReferenceSection`)는 남겨 뒀다. 나중에 성격이 다른 묶음이 생기면 배열에 한 줄만 추가하면 된다.
 - 시트의 memo·connection_note는 넣지 않았다(본인 문장과 AI 정리가 섞여 있어서).
-- 권리: SA-001만 Public domain(시트 기재). 나머지는 "출처 확인 필요". `hero.jpg`는 Higgsfield로 만든 생성형 이미지(프롬프트·후보 8장은 Drive `학교작업_원본/_from_Claude/2026-11-26/SSIKHIVE_hero_drafts`).
+- 권리: SA-001만 Public domain(시트 기재). 나머지는 "출처 확인 필요". 2026-11-27부터 상세 보기에는 권리 문구를 띄우지 않고(데이터의 `rights`·`rightsNote`와 `CREDITS.md`에는 그대로 있음), 꼬리글 한 줄로 대신한다. `hero.jpg`는 Higgsfield로 만든 생성형 이미지(프롬프트·후보 8장은 Drive `학교작업_원본/_from_Claude/2026-11-26/SSIKHIVE_hero_drafts`).
 - 예전에 저장한 id(1학기 jente, drake …)는 앱이 처음 열릴 때 걸러 낸다.
 
 ### 페이지에서 바로 기록 추가하기 (2026-11-26 결정: 본인)
@@ -222,6 +222,8 @@ FinalApp ─ 기본 9개(− hiddenIds로 숨긴 것, + edits로 고친 것) + c
 | 2026-11-26 | Claude | SENSORY ARCHIVE와 통일된 디자인 시스템 | 기존 CSS 분석, 토큰 파일, 공통 컴포넌트 재디자인 | (기록할 것) | 1학기 디자인 폐기, 사이트 이름·종이 테마·콜라주 무게 결정 |
 | 2026-11-26 | Claude | 레퍼런스·링크·이미지 최신화 | archiveData 확인, 데이터 구조 | (기록할 것) | hero는 생성형 이미지라고 알려 줌 |
 | 2026-11-26 | Claude | 내 브라우저로 화면 점검, Hero 교체 | 좁은 화면 Hero·무대 패널·탭 제목 지적과 수정, SA 이미지 콜라주 Hero | (기록할 것) | 고칠 것 승인, SA 콜라주는 중복돼 보인다고 판단 → Higgsfield·Midjourney 후보 8장 중 Higgsfield 1번 선택 |
+| 2026-11-27 | Claude | 상세 보기의 image rights 문구 빼기 | 화면에서는 빼고 기록(데이터 rights·CREDITS.md)은 남기자고 제안, 꼬리글 한 줄("Images are references for study. Rights belong to their owners.") 작성 | (기록할 것) | "image rights 문구 없애도 되지 않아?" 제안, 1·2·3안 모두 진행 결정 |
+| 2026-11-27 | Claude | SA-006 사진 두 장 교체 | 올려 준 5장 중 2장 선택(나무 사이 길·돌계단), 검은 띠 자르기·크기 맞추기, 캡션 2줄 작성, 14장 archiveData.js의 SA-006 줄과 CREDITS.md 수정 | (기록할 것) | "사진이 다 비슷하다"고 지적, 대체할 사진 5장 직접 제공 |
 | 2026-11-27 | Claude | 분야 목록 디자인·SA-006 이미지 | 직접 그린 목록(combobox), 검은 띠 자르기 | (기록할 것) | 목록이 사이트와 안 어울린다·이미지가 잘못 들어갔다고 지적 |
 | 2026-11-27 | Claude | 분야 직접 추가 | select → input+datalist, 기록에서 분야 목록을 뽑는 구조, 대소문자 정리 | (기록할 것) | 기능 제안("다른 카테고리일 수도 있다") |
 | 2026-11-27 | Claude | Digging Log 설명 문장 | 후보 5개와 이유 제안 | (기록할 것) | "아카이빙 성격과 안 맞는다" 지적, E안("References I dug up, and why they stayed.") 선택 |

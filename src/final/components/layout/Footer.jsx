@@ -7,7 +7,13 @@ import { Link } from "react-router-dom";
 function Footer() {
     return (
         <footer className="footer">
-            <p>©2026 SSIKHIVE</p>
+            <p>
+                ©2026 SSIKHIVE
+                <br />
+                <span className="footer-muted">
+                    Images are references for study. Rights belong to their owners.
+                </span>
+            </p>
             <p>
                 Curated by Woosik Park
                 <br />

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import NodeTag from "./NodeTag";
-import { rights } from "../../data/references";
 
 // 레퍼런스 상세 보기. Archive에서 카드를 눌렀을 때도, Stage에서 Enter로 들어갔을 때도 이 컴포넌트 하나를 쓴다.
 // 1학기에는 jQuery로 카드 안의 글자를 읽어 모달에 옮겨 담았지만, 여기서는 데이터(item)를 props로 받아 그린다.
@@ -66,10 +65,7 @@ function DetailModal({ item, onClose, showStageLink, onEdit, onDelete }) {
                         )}
                     </div>
 
-                    <p className="meta rights-line">
-                        image rights — {rights[item.rights].label} ({item.rightsNote})
-                    </p>
-
+                    {/* 권리 상태(item.rights)는 데이터와 CREDITS.md에 남겨 두고, 화면에서는 꼬리글 한 줄로 한 번만 말한다 */}
                     <div className="actions">
                         {item.link && (
                             <a className="stamp" href={item.link} target="_blank" rel="noreferrer">
