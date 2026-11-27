@@ -9,6 +9,11 @@ import { normalizeDomain } from "../../data/references";
 // onSubmit(fields): 폼 내용을 부모에게 넘긴다. 부모가 저장하고, 성공하면 { id }, 실패하면 { error }를 돌려준다
 // onReset        : (선택) 넘겨주면 "원래대로" 버튼이 생긴다 (기본 기록을 고친 적이 있을 때)
 // onClose        : 폼 닫기
+//
+// 자동으로 해 주는 것 두 가지 (2026-11-27 추가):
+//  1) Link 칸에 YouTube·Vimeo 주소를 넣으면 제목·제작자·썸네일을 불러와 "빈 칸에만" 채운다
+//  2) 이미지는 파일 고르기 말고도 Ctrl+V로 붙여넣거나 끌어다 놓을 수 있다
+// "왜 끌렸나"는 자동으로 채우지 않는다 — 그건 사람이 쓰는 칸이다.
 
 const MAX_IMAGES = 3;
 const MAX_SIDE = 900; // 올린 사진은 긴 변 900px로 줄여서 저장한다 (브라우저 저장 공간이 작아서)
@@ -42,6 +47,26 @@ function shrinkImage(file) {
     });
 }
 
+// 주소를 보고 "정보를 물어볼 곳"을 정한다. 아는 사이트가 아니면 null (아무것도 하지 않는다).
+// oEmbed: 영상 주소를 주면 제목·제작자·썸네일을 JSON으로 돌려주는 공개 주소. 키가 필요 없다.
+function linkSource(url) {
+    const youtube = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/))([\w-]{11})/);
+    if (youtube) {
+        return {
+            endpoint: "https://www.youtube.com/oembed?format=json&url=" + encodeURIComponent(url),
+            // 썸네일 주소는 영상 번호만 알면 만들 수 있다. 큰 것(maxres)이 없는 영상은 작은 것(hq)으로 바꾼다 → handleThumbLoad
+            thumb: "https://i.ytimg.com/vi/" + youtube[1] + "/maxresdefault.jpg",
+            thumbFallback: "https://i.ytimg.com/vi/" + youtube[1] + "/hqdefault.jpg",
+            // YouTube Music 주소일 때만 분야를 짐작한다. 그냥 YouTube는 영상인지 음악인지 알 수 없어서 비워 둔다
+            domain: url.includes("music.youtube.com") ? "music" : "",
+        };
+    }
+    if (/vimeo\.com\/(?:.*\/)?\d+/.test(url)) {
+        return { endpoint: "https://vimeo.com/api/oembed.json?url=" + encodeURIComponent(url), thumb: "", thumbFallback: "", domain: "" };
+    }
+    return null;
+}
+
 const emptyForm = { domain: "", title: "", credits: "", url: "", captured: today(), why: "", question: "" };
 
 function AddEntryForm({ domains, initial, onSubmit, onReset, onClose }) {
@@ -64,6 +89,58 @@ function AddEntryForm({ domains, initial, onSubmit, onReset, onClose }) {
     const [imageUrl, setImageUrl] = useState("");
     const [message, setMessage] = useState("");
     const [domainOpen, setDomainOpen] = useState(false); // 분야 목록이 열려 있는지
+    const [linkInfo, setLinkInfo] = useState(null); // 링크에서 불러온 정보: { status: "loading" | "done" | "failed", title, author, thumb, thumbFallback }
+    const [dragOver, setDragOver] = useState(false); // 이미지를 끌어서 칸 위에 올려 둔 상태인지
+
+    // 링크 자동 채움. Link 칸의 주소가 바뀔 때마다 실행된다.
+    // - 수정 폼을 열자마자 불러오지 않도록, 이미 확인한 주소(checkedUrl)와 같으면 건너뛴다
+    // - 글자를 칠 때마다 요청하지 않도록 0.6초 기다렸다가 보낸다 (그 사이 주소가 또 바뀌면 clearTimeout으로 취소)
+    // - 늦게 도착한 옛 응답이 새 주소의 결과를 덮지 않도록 cancelled로 막는다
+    const checkedUrl = useRef(editing ? initial.url : "");
+    useEffect(() => {
+        const url = form.url.trim();
+        if (url === checkedUrl.current) return undefined;
+        const source = linkSource(url);
+        if (!source) {
+            checkedUrl.current = url;
+            setLinkInfo(null);
+            return undefined;
+        }
+        let cancelled = false;
+        setLinkInfo({ status: "loading" });
+        const timer = setTimeout(async () => {
+            checkedUrl.current = url;
+            try {
+                const response = await fetch(source.endpoint);
+                if (!response.ok) throw new Error("링크 정보 없음");
+                const data = await response.json();
+                if (cancelled) return;
+                const title = data.title || "";
+                const author = data.author_name || "";
+                setLinkInfo({
+                    status: "done",
+                    title,
+                    author,
+                    thumb: source.thumb || data.thumbnail_url || "",
+                    thumbFallback: source.thumbFallback,
+                });
+                // 빈 칸에만 채운다 — 이미 적은 내용은 건드리지 않는다
+                setForm((previous) => ({
+                    ...previous,
+                    title: previous.title.trim() === "" ? title : previous.title,
+                    credits: previous.credits.trim() === "" ? author : previous.credits,
+                    domain: previous.domain.trim() === "" ? source.domain : previous.domain,
+                }));
+            } catch (error) {
+                // 불러오지 못해도 폼은 그대로 쓸 수 있다. 썸네일 주소는 영상 번호로 만든 것이라 그대로 권한다
+                if (!cancelled) setLinkInfo({ status: "failed", thumb: source.thumb, thumbFallback: source.thumbFallback });
+            }
+        }, 600);
+        return () => {
+            cancelled = true;
+            clearTimeout(timer);
+        };
+    }, [form.url]);
 
     // 여러 줄 칸의 높이를 내용에 딱 맞춘다. 고정 높이(rows)면 글 아래에 지울 수 없는 빈 줄처럼 보이는 공간이 남는다.
     // 높이를 잠깐 auto로 풀었다가, 내용 전체 높이(scrollHeight)만큼으로 다시 잡는다. 글이 바뀔 때마다 실행.
@@ -83,15 +160,61 @@ function AddEntryForm({ domains, initial, onSubmit, onReset, onClose }) {
         setForm((previous) => ({ ...previous, [name]: value }));
     }
 
-    async function handleFiles(event) {
-        const files = Array.from(event.target.files).slice(0, MAX_IMAGES - images.length);
-        event.target.value = ""; // 같은 파일을 다시 골라도 동작하게 비운다
+    // 이미지 파일을 줄여서 목록에 넣는다. 파일 고르기·붙여넣기·끌어다 놓기 세 길이 모두 이 함수로 모인다.
+    // caption: 붙여넣은 이미지는 파일 이름이 전부 "image.png"라서, 넘겨준 이름을 대신 쓴다
+    async function addFiles(fileList, caption) {
+        const room = MAX_IMAGES - images.length;
+        const files = Array.from(fileList).filter((file) => file.type.startsWith("image/"));
+        if (files.length === 0) return;
+        if (room <= 0) {
+            setMessage("이미지는 " + MAX_IMAGES + "장까지 넣을 수 있어요.");
+            return;
+        }
+        const picked = files.slice(0, room);
         try {
-            const shrunk = await Promise.all(files.map(shrinkImage));
-            setImages((previous) => [...previous, ...shrunk.map((src, i) => ({ src, caption: files[i].name }))]);
+            const shrunk = await Promise.all(picked.map(shrinkImage));
+            setImages((previous) => [...previous, ...shrunk.map((src, i) => ({ src, caption: caption || picked[i].name }))]);
             setMessage("");
         } catch (error) {
             setMessage("이미지를 읽지 못했어요. 다른 파일을 골라 주세요.");
+        }
+    }
+
+    function handleFiles(event) {
+        addFiles(event.target.files);
+        event.target.value = ""; // 같은 파일을 다시 골라도 동작하게 비운다
+    }
+
+    // 폼 어디서든 Ctrl+V: 클립보드에 이미지(캡처)가 있으면 이미지로 넣는다. 글자를 붙여넣을 때는 아무것도 하지 않는다.
+    function handlePaste(event) {
+        const files = Array.from(event.clipboardData.files).filter((file) => file.type.startsWith("image/"));
+        if (files.length === 0) return;
+        event.preventDefault();
+        addFiles(files, "붙여넣은 이미지");
+    }
+
+    // 끌어다 놓기. dragover에서 preventDefault를 해야 브라우저가 "여기에 놓을 수 있다"고 본다
+    // (안 하면 놓는 순간 브라우저가 그 이미지 파일을 새 화면으로 열어 버린다).
+    function handleDragOver(event) {
+        event.preventDefault();
+        setDragOver(true);
+    }
+
+    function handleDrop(event) {
+        event.preventDefault();
+        setDragOver(false);
+        addFiles(event.dataTransfer.files);
+    }
+
+    // 링크에서 찾은 썸네일을 이미지 목록에 넣는다 (주소로 넣는 것이라 저장 공간을 거의 쓰지 않는다)
+    function addThumb() {
+        setImages((previous) => [...previous, { src: linkInfo.thumb, caption: "영상 썸네일" }]);
+    }
+
+    // YouTube는 큰 썸네일이 없는 영상에 120px짜리 빈 그림을 돌려준다. 그러면 작은 썸네일 주소로 바꾼다.
+    function handleThumbLoad(event) {
+        if (event.target.naturalWidth <= 120 && linkInfo.thumbFallback && linkInfo.thumb !== linkInfo.thumbFallback) {
+            setLinkInfo((previous) => ({ ...previous, thumb: previous.thumbFallback }));
         }
     }
 
@@ -164,9 +287,10 @@ function AddEntryForm({ domains, initial, onSubmit, onReset, onClose }) {
 
     const isNewDomain = typedDomain !== "" && typedDomain !== "all" && !pickable.some((d) => d.value === typedDomain);
     const canAddImage = images.length < MAX_IMAGES;
+    const thumbUsed = Boolean(linkInfo && linkInfo.thumb) && images.some((image) => image.src === linkInfo.thumb);
 
     return (
-        <form className="paper add-form" onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
+        <form className="paper add-form" onSubmit={handleSubmit} onKeyDown={handleKeyDown} onPaste={handlePaste}>
             <div className="add-form-head">
                 <h2>{editing ? "Edit " + initial.id : "New entry"}</h2>
                 <p className="meta">
@@ -230,8 +354,28 @@ function AddEntryForm({ domains, initial, onSubmit, onReset, onClose }) {
                 </label>
                 <label className="field">
                     <span>Link</span>
-                    <input name="url" value={form.url} onChange={handleChange} placeholder="https://" />
+                    <input name="url" value={form.url} onChange={handleChange} placeholder="https:// — YouTube·Vimeo는 제목을 불러와요" />
                 </label>
+                {linkInfo && (
+                    <div className="link-info" role="status">
+                        {linkInfo.thumb && <img src={linkInfo.thumb} alt="" onLoad={handleThumbLoad} />}
+                        <p>
+                            {linkInfo.status === "loading" && "링크 정보를 불러오는 중…"}
+                            {linkInfo.status === "done" && (
+                                <>
+                                    <strong>{linkInfo.title}</strong>
+                                    {linkInfo.author && " · " + linkInfo.author}
+                                    <br />
+                                    제목·제작자를 빈 칸에만 채웠어요.
+                                </>
+                            )}
+                            {linkInfo.status === "failed" && "링크 정보를 불러오지 못했어요. 제목은 직접 적어 주세요."}
+                        </p>
+                        {linkInfo.thumb && canAddImage && !thumbUsed && (
+                            <button type="button" className="tab" onClick={addThumb}>썸네일을 이미지로 쓰기</button>
+                        )}
+                    </div>
+                )}
                 <label className="field wide">
                     <span>Why it caught me *</span>
                     <textarea ref={whyRef} name="why" value={form.why} onChange={handleChange} rows={1} placeholder="왜 끌렸는지, 내 말로" />
@@ -242,7 +386,12 @@ function AddEntryForm({ domains, initial, onSubmit, onReset, onClose }) {
                 </label>
             </div>
 
-            <div className="field wide">
+            <div
+                className={"field wide drop-zone" + (dragOver ? " is-over" : "")}
+                onDragOver={handleDragOver}
+                onDragLeave={() => setDragOver(false)}
+                onDrop={handleDrop}
+            >
                 <span>Images ({images.length}/{MAX_IMAGES})</span>
                 {images.length > 0 && (
                     <ul className="add-thumbs">
@@ -272,6 +421,7 @@ function AddEntryForm({ domains, initial, onSubmit, onReset, onClose }) {
                         </button>
                     </div>
                 )}
+                {canAddImage && <span className="field-hint">캡처는 Ctrl+V로 붙여넣거나, 파일을 이 칸으로 끌어다 놓아도 돼요</span>}
             </div>
 
             {message && <p className="add-message" role="alert">{message}</p>}

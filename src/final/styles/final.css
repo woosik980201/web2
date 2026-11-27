@@ -336,6 +336,13 @@ html { scroll-behavior: smooth; }
 .add-thumbs button { position: absolute; top: 0; right: 0; width: 28px; height: 28px; border: 0; background: var(--ink); color: var(--paper); font-size: 16px; line-height: 1; }
 .add-image-row { display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; }
 .add-image-row .image-url { flex: 1; min-width: 200px; }
+/* 링크에서 불러온 정보 한 줄 (AddEntryForm) */
+.link-info { grid-column: 1 / -1; display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; padding: var(--space-3) 0; border-top: 1px dashed var(--line); border-bottom: 1px dashed var(--line); font-size: var(--text-label); color: var(--muted); }
+.link-info img { width: 112px; height: 63px; object-fit: cover; filter: none; }
+.link-info p { flex: 1; min-width: 200px; margin: 0; line-height: 1.6; }
+.link-info strong { color: var(--ink); font-weight: 500; }
+/* 이미지를 끌어서 올려 둔 동안 */
+.drop-zone.is-over { outline: 1px dashed var(--ink); outline-offset: var(--space-2); }
 .file-pick { cursor: pointer; }
 .file-pick input { position: absolute; width: 1px; height: 1px; opacity: 0; }
 .file-pick:focus-within { outline: 2px solid var(--ink); outline-offset: 3px; }
