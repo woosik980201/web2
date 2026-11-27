@@ -87,6 +87,11 @@ src/final/
 - 이미지: 파일 올리기(브라우저에서 긴 변 900px JPG로 줄여 저장) 또는 이미지 주소. 기록당 3장까지
 - 저장 위치: 이 브라우저의 `localStorage`(`ssikhive-entries`). **구글 시트는 읽지도 쓰지도 않는다**(시트 읽기 전용 원칙 유지)
 - 번호는 자동(`nextId`: 가장 큰 번호 + 1 → SA-010), 무대 위치도 자동(`stageSpotFor`: 기존 조각을 피한 빈자리 6곳)
+- 분야(Domain)를 직접 적어 늘리기 (2026-11-27 요청: 본인 — "보기에 없는 도메인을 직접 입력하면 자동으로 추가되게"):
+  - 폼의 Domain 칸을 고르기 전용(`select`)에서 **고르거나 직접 적는 칸**(`input` + `datalist`)으로 바꿨다
+  - 분야 목록을 따로 저장하지 않는다. `domainsOf(entries)`가 기록에서 분야를 뽑아 필터 목록을 만든다(파생 데이터). 그래서 새 분야로 기록을 저장하면 Archive·Stage 필터와 Hero의 Domains에 자동으로 생기고, 그 분야의 기록이 다 지워지면 자동으로 사라진다
+  - `normalizeDomain`: 앞뒤 공백을 떼고 소문자로 맞춘다 → "Design"과 "design"이 두 분야로 갈라지지 않는다. "all"은 전체 보기 자리라 분야 이름으로 못 쓴다
+  - 한계: 새 분야의 NodeTag는 모두 TOP으로 나온다(CHOP은 music만). 소리 계열 분야를 더 만들면 `operatorOf`에 추가해야 한다
 - 고치기 (2026-11-27 요청: 본인 — "수정 기능도 넣어줘"):
   - 상세 보기의 "수정" → 그 기록 내용이 채워진 폼이 열린다. **새 기록 폼과 같은 컴포넌트**(`AddEntryForm`)에 `initial` props만 넘긴 것
   - 직접 추가한 기록은 저장 목록에서 바꿔 넣는다. 기본 9개는 고친 칸만 `edits`(`ssikhive-edits`)에 따로 저장해 화면에서 덮어쓴다 (14장 데이터 파일은 그대로)
@@ -118,6 +123,7 @@ FinalApp ─ 기본 9개(− hiddenIds로 숨긴 것, + edits로 고친 것) + c
 - **AddEntryForm의 state:** 입력칸 값은 폼 안에만 있다(제어 컴포넌트: `value` + `onChange`). 제출할 때만 `onAdd`로 부모에게 넘긴다. 입력 함수 하나(`handleChange`)가 `name` 속성으로 모든 칸을 처리한다.
 - **savedIds를 FinalApp에 둔 이유:** Archive(고르기·Dive in 보기), Stage(무대에 올릴 기록), Header(개수) 세 곳이 같은 값을 쓴다. 공통 부모에 두고 props로 내려 준다(state 끌어올리기).
 - **view·domain·query·openItem은 ArchivePage 안에:** Archive만 쓰는 값이라서.
+- **분야 목록도 state가 아님:** 기록(entries)에서 계산한다(`useMemo`). 기록과 분야 목록을 따로 저장하면 둘이 어긋날 수 있다.
 - **filtered는 state가 아님:** 보기·분야·검색어에서 그릴 때마다 계산한다. 따로 저장하면 원본과 어긋날 수 있다.
 - **theme는 Context:** 14장 무대까지 거의 모든 곳이 색을 알아야 해서 props 대신 Context로 나눠 준다.
 - **localStorage:** 저장 목록과 테마는 새로고침해도 남는다. `useState(() => ...)`로 처음 한 번만 읽고 `useEffect`로 바뀔 때마다 쓴다.
@@ -139,7 +145,7 @@ FinalApp ─ 기본 9개(− hiddenIds로 숨긴 것, + edits로 고친 것) + c
 | `ParamsPanel` | Archive (view·domain·query·results·dive in), 인트로 (in·op·out·t) | `title`, `rows` |
 | `Layout`·`Header`·`Footer` | 두 페이지 | `savedCount` |
 | `CollageStage` | 14장 → 기말과제 Stage | 고치지 않고 import |
-| `references.js`의 `domains` | Archive 필터, Stage 필터 | 같은 배열 |
+| `domainsOf(entries)`로 만든 분야 목록 | Archive 필터, Stage 필터, 폼의 Domain 목록, Hero의 Domains | 같은 배열 (FinalApp에서 한 번 계산해 내려 줌) |
 
 비교 사례:
 - 1학기 `index.html`은 카드 HTML을 하나씩 손으로 반복해 적었다 → 지금은 `references` 배열 + `map`.
@@ -215,6 +221,7 @@ FinalApp ─ 기본 9개(− hiddenIds로 숨긴 것, + edits로 고친 것) + c
 | 2026-11-26 | Claude | SENSORY ARCHIVE와 통일된 디자인 시스템 | 기존 CSS 분석, 토큰 파일, 공통 컴포넌트 재디자인 | (기록할 것) | 1학기 디자인 폐기, 사이트 이름·종이 테마·콜라주 무게 결정 |
 | 2026-11-26 | Claude | 레퍼런스·링크·이미지 최신화 | archiveData 확인, 데이터 구조 | (기록할 것) | hero는 생성형 이미지라고 알려 줌 |
 | 2026-11-26 | Claude | 내 브라우저로 화면 점검, Hero 교체 | 좁은 화면 Hero·무대 패널·탭 제목 지적과 수정, SA 이미지 콜라주 Hero | (기록할 것) | 고칠 것 승인, SA 콜라주는 중복돼 보인다고 판단 → Higgsfield·Midjourney 후보 8장 중 Higgsfield 1번 선택 |
+| 2026-11-27 | Claude | 분야 직접 추가 | select → input+datalist, 기록에서 분야 목록을 뽑는 구조, 대소문자 정리 | (기록할 것) | 기능 제안("다른 카테고리일 수도 있다") |
 | 2026-11-27 | Claude | Digging Log 설명 문장 | 후보 5개와 이유 제안 | (기록할 것) | "아카이빙 성격과 안 맞는다" 지적, E안("References I dug up, and why they stayed.") 선택 |
 | 2026-11-27 | Claude | Enter로 저장되는 문제 수정 | 원인 설명(input의 Enter = 폼 제출), 막는 코드, 줄바꿈 표시 | (기록할 것) | 직접 써 보다가 문제 발견·보고 |
 | 2026-11-27 | Claude | 기록 수정 | 추가 폼을 수정에도 쓰도록 확장, 기본 기록은 덮어쓰기(edits)·원래대로 구현 | (기록할 것) | 수정 기능 요청 |

@@ -2,7 +2,6 @@ import React, { useState, useCallback, useContext, useMemo } from "react";
 import ThemeContext from "../context/ThemeContext";
 import FilterChips from "../components/common/FilterChips";
 import DetailModal from "../components/common/DetailModal";
-import { domains } from "../data/references";
 // 14장에서 만든 SENSORY ARCHIVE 무대를 고치지 않고 그대로 가져와 쓴다
 import CollageStage from "../../14/archive/CollageStage";
 import "../../14/archive/ArchivePage.css";
@@ -18,11 +17,13 @@ const views = [
 
 // entries   : 무대용 기록 전체 (기본 9개 + 직접 추가한 기록, x·y 위치 포함)
 // references: 상세 보기용 같은 기록들
-function StagePage({ entries, references, savedIds }) {
+// domains   : 분야 필터 목록 (기록에서 뽑은 것)
+function StagePage({ entries, references, domains, savedIds }) {
     const { theme } = useContext(ThemeContext);
     const hasSaved = savedIds.length > 0;
     const [view, setView] = useState(hasSaved ? "saved" : "all");
-    const [domain, setDomain] = useState("all");
+    const [pickedDomain, setDomain] = useState("all");
+    const domain = domains.some((option) => option.value === pickedDomain) ? pickedDomain : "all";
     const [openId, setOpenId] = useState(null);
 
     // 고른 게 하나도 없으면 "Dive in" 보기여도 전체를 쓴다

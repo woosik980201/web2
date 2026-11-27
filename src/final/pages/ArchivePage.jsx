@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { sections, domains } from "../data/references";
+import { sections } from "../data/references";
 import Hero from "../components/archive/Hero";
 import FilterChips from "../components/common/FilterChips";
 import ParamsPanel from "../components/common/ParamsPanel";
@@ -22,6 +22,7 @@ const views = [
 // 기록은 상세 보기에서 지운다(한 번 더 묻고 → 지운 뒤 잠깐 "되돌리기"). 지운 기본 기록은 "지운 기록 되돌리기"로 전부 복구할 수 있다.
 function ArchivePage({
     references,
+    domains,
     savedIds,
     onToggleSave,
     onAddEntry,
@@ -37,7 +38,9 @@ function ArchivePage({
     // 머리글의 dive in 숫자를 누르고 들어오면 "Dive in" 보기로 시작한다 (Link의 state로 전달됨)
     const location = useLocation();
     const [view, setView] = useState(location.state && location.state.view === "saved" ? "saved" : "all");
-    const [domain, setDomain] = useState("all");
+    const [pickedDomain, setDomain] = useState("all");
+    // 고른 분야가 목록에서 사라졌으면(그 분야의 기록을 다 지웠을 때) 전체로 본다
+    const domain = domains.some((option) => option.value === pickedDomain) ? pickedDomain : "all";
     const [query, setQuery] = useState("");
     const [openItem, setOpenItem] = useState(null);
     const [adding, setAdding] = useState(false); // 새 기록 폼이 열려 있는지
@@ -110,7 +113,7 @@ function ArchivePage({
 
     return (
         <>
-            <Hero references={references} />
+            <Hero references={references} domains={domains} />
 
             <div id="index" className="archive-controls">
                 <div className="controls-left">
@@ -172,6 +175,7 @@ function ArchivePage({
                             images: editing.images,
                         }
                     }
+                    domains={domains}
                     onSubmit={handleSubmit}
                     onReset={editing && editing.edited ? handleReset : undefined}
                     onClose={closeForm}

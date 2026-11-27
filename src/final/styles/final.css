@@ -306,6 +306,7 @@ html { scroll-behavior: smooth; }
 .field { display: grid; gap: var(--space-1); }
 .field.wide { grid-column: 1 / -1; }
 .field > span { font-size: var(--text-label); color: var(--muted); }
+.field > .field-hint { color: var(--brown); }
 .field input, .field select, .field textarea, .image-url {
     width: 100%;
     padding: var(--space-2) 0;

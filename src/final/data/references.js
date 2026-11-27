@@ -22,14 +22,28 @@ export const sections = [
     },
 ];
 
-// 분야 필터 (SENSORY ARCHIVE의 분야 그대로)
-export const domains = [
-    { value: "all", label: "All" },
-    { value: "film", label: "Film" },
-    { value: "music", label: "Music" },
-    { value: "fashion", label: "Fashion" },
-    { value: "art", label: "Art" },
-];
+// 처음부터 있는 분야 (SENSORY ARCHIVE의 분야 그대로). 필터에 늘 이 순서로 먼저 나온다.
+const baseDomains = ["film", "music", "fashion", "art"];
+
+// 분야 이름을 저장용 값으로 다듬는다: 앞뒤 공백을 떼고 소문자로 ("  Design " → "design")
+// 같은 분야가 "Design"과 "design" 두 개로 갈라지지 않게 하기 위해서다.
+export function normalizeDomain(text) {
+    return text.trim().toLowerCase();
+}
+
+// 지금 기록들에서 분야 필터 목록을 만든다: All + 기본 4개 + 기록에 쓰인 새 분야(쓰인 순서대로).
+// 분야를 따로 저장하지 않고 기록에서 뽑아내므로, 새 분야로 기록을 추가하면 필터에 자동으로 생기고
+// 그 분야의 기록이 모두 지워지면 필터에서도 자동으로 사라진다.
+export function domainsOf(entries) {
+    const names = [...baseDomains];
+    entries.forEach((entry) => {
+        if (!names.includes(entry.domain)) names.push(entry.domain);
+    });
+    return [
+        { value: "all", label: "All" },
+        ...names.map((name) => ({ value: name, label: name.charAt(0).toUpperCase() + name.slice(1) })),
+    ];
+}
 
 // SA 기록(archiveData 모양) 하나를 화면에서 쓰는 레퍼런스 모양으로 바꾼다.
 // 14장 기록이든, 이 페이지에서 직접 추가한 기록이든 같은 함수를 거친다.

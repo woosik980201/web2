@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { domains } from "../../data/references";
+import { normalizeDomain } from "../../data/references";
 
 // 레퍼런스 기록 폼. 새 기록을 적을 때와 있는 기록을 고칠 때 같은 폼을 쓴다.
 // 구글 시트(References 탭)에 적던 칸을 그대로 옮겼다. 시트는 건드리지 않고, 내용은 이 브라우저(localStorage)에만 남는다.
 //
+// domains        : 지금 있는 분야 목록 (고르기용). 목록에 없는 분야를 직접 적으면 새 분야가 된다
 // initial        : (선택) 고칠 기록. 넘겨주면 그 내용으로 칸을 채운 "수정" 폼이 되고, 없으면 "새 기록" 폼이다
 // onSubmit(fields): 폼 내용을 부모에게 넘긴다. 부모가 저장하고, 성공하면 { id }, 실패하면 { error }를 돌려준다
 // onReset        : (선택) 넘겨주면 "원래대로" 버튼이 생긴다 (기본 기록을 고친 적이 있을 때)
@@ -41,9 +42,9 @@ function shrinkImage(file) {
     });
 }
 
-const emptyForm = { domain: "film", title: "", credits: "", url: "", captured: today(), why: "", question: "" };
+const emptyForm = { domain: "", title: "", credits: "", url: "", captured: today(), why: "", question: "" };
 
-function AddEntryForm({ initial, onSubmit, onReset, onClose }) {
+function AddEntryForm({ domains, initial, onSubmit, onReset, onClose }) {
     const editing = Boolean(initial);
     // 처음 값: 수정이면 그 기록의 내용, 새 기록이면 빈칸. (useState의 처음 값은 폼이 처음 그려질 때 한 번만 쓰인다)
     const [form, setForm] = useState(
@@ -121,8 +122,14 @@ function AddEntryForm({ initial, onSubmit, onReset, onClose }) {
             setMessage("제목과 '왜 끌렸나'는 꼭 적어 주세요 — 이 아카이브의 핵심이에요.");
             return;
         }
+        // 분야: 목록에서 골랐든 직접 적었든 같은 꼴로 다듬는다. "all"은 필터의 "전체" 자리라 분야 이름으로 못 쓴다.
+        const domain = normalizeDomain(form.domain);
+        if (domain === "" || domain === "all") {
+            setMessage("분야(Domain)를 적어 주세요. 목록에서 고르거나 새 이름을 적으면 돼요.");
+            return;
+        }
         const result = onSubmit({
-            domain: form.domain,
+            domain,
             title: form.title.trim(),
             credits: form.credits.trim() || "—",
             url: form.url.trim(),
@@ -142,6 +149,9 @@ function AddEntryForm({ initial, onSubmit, onReset, onClose }) {
     }
 
     const pickable = domains.filter((d) => d.value !== "all");
+    // 지금 적은 분야가 목록에 없는 새 분야인지 (안내 문장용)
+    const typedDomain = normalizeDomain(form.domain);
+    const isNewDomain = typedDomain !== "" && typedDomain !== "all" && !pickable.some((d) => d.value === typedDomain);
     const canAddImage = images.length < MAX_IMAGES;
 
     return (
@@ -155,12 +165,22 @@ function AddEntryForm({ initial, onSubmit, onReset, onClose }) {
 
             <div className="add-grid">
                 <label className="field">
-                    <span>Domain</span>
-                    <select name="domain" value={form.domain} onChange={handleChange}>
+                    <span>Domain — 고르거나 새로 적기</span>
+                    {/* input + datalist: 목록에서 고를 수도 있고, 없는 분야를 직접 적을 수도 있다 */}
+                    <input
+                        name="domain"
+                        list="domain-options"
+                        value={form.domain}
+                        onChange={handleChange}
+                        placeholder="film, music, … 또는 새 분야"
+                        autoComplete="off"
+                    />
+                    <datalist id="domain-options">
                         {pickable.map((d) => (
-                            <option key={d.value} value={d.value}>{d.label}</option>
+                            <option key={d.value} value={d.value} />
                         ))}
-                    </select>
+                    </datalist>
+                    {isNewDomain && <span className="field-hint">새 분야 "{typedDomain}" — 저장하면 필터에 추가돼요</span>}
                 </label>
                 <label className="field">
                     <span>Captured</span>

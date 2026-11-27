@@ -7,7 +7,7 @@ import heroImage from "../../assets/hero.jpg";
 // 이미지: Higgsfield(Nano Banana 2)로 만든 생성형 이미지, 2026-11-26.
 // 카드에 쓰는 SA 이미지와 겹치지 않게, 특정 작품 대신 아카이브의 "재료"(필름·원단·테이프·파형·종이)를 놓은 정물로 만들었다.
 
-function Hero({ references }) {
+function Hero({ references, domains }) {
     const total = references.length;
     // 가장 최근에 기록한 날짜 ("2026.11.25" 꼴이라 글자 순서로 비교해도 된다). 새 기록을 추가하면 같이 바뀐다.
     const lastCaptured = references.map((item) => item.archive.captured).sort().pop();
@@ -15,7 +15,8 @@ function Hero({ references }) {
     const facts = [
         { label: "Format", value: "Personal archive" },
         { label: "References", value: total + " entries" },
-        { label: "Domains", value: "Film · Music · Fashion · Art" },
+        // 분야 목록도 기록에서 뽑은 것이라, 새 분야를 추가하면 여기도 함께 늘어난다
+        { label: "Domains", value: domains.filter((d) => d.value !== "all").map((d) => d.label).join(" · ") },
         { label: "Last captured", value: lastCaptured },
         { label: "Curated by", value: "Woosik Park" },
         { label: "Each entry keeps", value: "Why it caught me · Next question" },

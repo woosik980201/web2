@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import ThemeContext from "./context/ThemeContext";
-import { baseEntries, toReference, nextId, stageSpotFor } from "./data/references";
+import { baseEntries, toReference, nextId, stageSpotFor, domainsOf } from "./data/references";
 import Layout from "./components/layout/Layout";
 import ArchivePage from "./pages/ArchivePage";
 import StagePage from "./pages/StagePage";
@@ -73,6 +73,8 @@ function FinalApp() {
         [customEntries, hiddenIds, edits]
     );
     const references = useMemo(() => entries.map(toReference), [entries]);
+    // 분야 필터 목록도 기록에서 뽑는다 (새 분야를 적어 넣으면 자동으로 늘어난다)
+    const domains = useMemo(() => domainsOf(entries), [entries]);
 
     // 예전에 저장했다가 데이터에서 빠진 id(예: 1학기 항목)는 걸러 낸다
     const [savedIds, setSavedIds] = useState(() =>
@@ -203,6 +205,7 @@ function FinalApp() {
                             element={
                                 <ArchivePage
                                     references={references}
+                                    domains={domains}
                                     savedIds={savedIds}
                                     onToggleSave={toggleSave}
                                     onAddEntry={addEntry}
@@ -217,7 +220,7 @@ function FinalApp() {
                                 />
                             }
                         />
-                        <Route path="stage" element={<StagePage entries={entries} references={references} savedIds={savedIds} />} />
+                        <Route path="stage" element={<StagePage entries={entries} references={references} domains={domains} savedIds={savedIds} />} />
                         {/* 예전 주소로 들어와도 길을 잃지 않게 */}
                         <Route path="sensory" element={<Navigate to="/stage" replace />} />
                         <Route path="collage" element={<Navigate to="/" replace />} />
