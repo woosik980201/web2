@@ -88,7 +88,7 @@ src/final/
 - 저장 위치: 이 브라우저의 `localStorage`(`ssikhive-entries`). **구글 시트는 읽지도 쓰지도 않는다**(시트 읽기 전용 원칙 유지)
 - 번호는 자동(`nextId`: 가장 큰 번호 + 1 → SA-010), 무대 위치도 자동(`stageSpotFor`: 기존 조각을 피한 빈자리 6곳)
 - 분야(Domain)를 직접 적어 늘리기 (2026-11-27 요청: 본인 — "보기에 없는 도메인을 직접 입력하면 자동으로 추가되게"):
-  - 폼의 Domain 칸을 고르기 전용(`select`)에서 **고르거나 직접 적는 칸**(`input` + `datalist`)으로 바꿨다
+  - 폼의 Domain 칸을 고르기 전용(`select`)에서 **고르거나 직접 적는 칸**으로 바꿨다. 처음엔 브라우저 기본 목록(`datalist`)을 썼는데 흰 둥근 상자라 사이트와 어울리지 않고 CSS로 바꿀 수도 없어서, 목록을 직접 그렸다(`domainOpen` state, 적는 글자로 거르기, `onMouseDown`의 `preventDefault`로 포커스 유지)
   - 분야 목록을 따로 저장하지 않는다. `domainsOf(entries)`가 기록에서 분야를 뽑아 필터 목록을 만든다(파생 데이터). 그래서 새 분야로 기록을 저장하면 Archive·Stage 필터와 Hero의 Domains에 자동으로 생기고, 그 분야의 기록이 다 지워지면 자동으로 사라진다
   - `normalizeDomain`: 앞뒤 공백을 떼고 소문자로 맞춘다 → "Design"과 "design"이 두 분야로 갈라지지 않는다. "all"은 전체 보기 자리라 분야 이름으로 못 쓴다
   - 한계: 새 분야의 NodeTag는 모두 TOP으로 나온다(CHOP은 music만). 소리 계열 분야를 더 만들면 `operatorOf`에 추가해야 한다
@@ -206,6 +206,7 @@ FinalApp ─ 기본 9개(− hiddenIds로 숨긴 것, + edits로 고친 것) + c
 ## 9. 알려진 한계
 
 - `hero.jpg`, `intro.mp4`는 생성형(Higgsfield). 화면 캡션에는 적지 않았으니 보고서 AI 활용 항목에 꼭 밝힐 것.
+- `src/14/archive/images/SA-006_03.jpg`: 양옆·아래에 검은 띠가 들어간 채 저장돼 있어 잘라 냈다(2026-11-27, 본인 지적). 14장 폴더에서 손댄 건 이 이미지 파일 하나뿐이고 코드는 그대로다.
 - 레퍼런스 이미지(SA-002~009)는 권리 미확인. `src/14/archive/CREDITS.md` 참고. 공개 배포·보고서 캡처 전에 확인.
 - Stage 무대는 키보드(방향키) 중심이라 휴대폰에서는 조각을 눌러서만 열 수 있다.
 - `BrowserRouter`라 GitHub Pages에 올리면 새로고침 시 404가 날 수 있다(배포한다면 `HashRouter` 검토).
@@ -221,6 +222,7 @@ FinalApp ─ 기본 9개(− hiddenIds로 숨긴 것, + edits로 고친 것) + c
 | 2026-11-26 | Claude | SENSORY ARCHIVE와 통일된 디자인 시스템 | 기존 CSS 분석, 토큰 파일, 공통 컴포넌트 재디자인 | (기록할 것) | 1학기 디자인 폐기, 사이트 이름·종이 테마·콜라주 무게 결정 |
 | 2026-11-26 | Claude | 레퍼런스·링크·이미지 최신화 | archiveData 확인, 데이터 구조 | (기록할 것) | hero는 생성형 이미지라고 알려 줌 |
 | 2026-11-26 | Claude | 내 브라우저로 화면 점검, Hero 교체 | 좁은 화면 Hero·무대 패널·탭 제목 지적과 수정, SA 이미지 콜라주 Hero | (기록할 것) | 고칠 것 승인, SA 콜라주는 중복돼 보인다고 판단 → Higgsfield·Midjourney 후보 8장 중 Higgsfield 1번 선택 |
+| 2026-11-27 | Claude | 분야 목록 디자인·SA-006 이미지 | 직접 그린 목록(combobox), 검은 띠 자르기 | (기록할 것) | 목록이 사이트와 안 어울린다·이미지가 잘못 들어갔다고 지적 |
 | 2026-11-27 | Claude | 분야 직접 추가 | select → input+datalist, 기록에서 분야 목록을 뽑는 구조, 대소문자 정리 | (기록할 것) | 기능 제안("다른 카테고리일 수도 있다") |
 | 2026-11-27 | Claude | Digging Log 설명 문장 | 후보 5개와 이유 제안 | (기록할 것) | "아카이빙 성격과 안 맞는다" 지적, E안("References I dug up, and why they stayed.") 선택 |
 | 2026-11-27 | Claude | Enter로 저장되는 문제 수정 | 원인 설명(input의 Enter = 폼 제출), 막는 코드, 줄바꿈 표시 | (기록할 것) | 직접 써 보다가 문제 발견·보고 |

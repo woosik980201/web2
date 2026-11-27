@@ -305,7 +305,14 @@ html { scroll-behavior: smooth; }
 .add-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4) var(--space-5); }
 .field { display: grid; gap: var(--space-1); }
 .field.wide { grid-column: 1 / -1; }
-.field > span { font-size: var(--text-label); color: var(--muted); }
+.field > span, .field > label { font-size: var(--text-label); color: var(--muted); }
+/* 분야 고르기: 직접 그린 목록 (종이 카드 + 가는 선, 사이트의 다른 조각과 같은 재료) */
+.combo { position: relative; }
+.combo::after { content: "▾"; position: absolute; right: 0; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 12px; pointer-events: none; }
+.combo-list { position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 5; margin: 0; padding: var(--space-1) 0; list-style: none; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow-paper); }
+.combo-list button { display: block; width: 100%; min-height: 40px; padding: 0 var(--space-3); border: 0; background: none; color: var(--ink); font-size: 15px; text-align: left; }
+.combo-list button:hover, .combo-list li[aria-selected="true"] button { background: var(--stage); }
+.combo-list li[aria-selected="true"] button { box-shadow: inset 3px 0 0 var(--tape); }
 .field > .field-hint { color: var(--brown); }
 .field input, .field select, .field textarea, .image-url {
     width: 100%;

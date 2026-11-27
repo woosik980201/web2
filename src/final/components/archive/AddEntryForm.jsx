@@ -63,6 +63,7 @@ function AddEntryForm({ domains, initial, onSubmit, onReset, onClose }) {
     const [images, setImages] = useState(editing ? initial.images : []); // [{ src, caption }]
     const [imageUrl, setImageUrl] = useState("");
     const [message, setMessage] = useState("");
+    const [domainOpen, setDomainOpen] = useState(false); // 분야 목록이 열려 있는지
 
     // 여러 줄 칸의 높이를 내용에 딱 맞춘다. 고정 높이(rows)면 글 아래에 지울 수 없는 빈 줄처럼 보이는 공간이 남는다.
     // 높이를 잠깐 auto로 풀었다가, 내용 전체 높이(scrollHeight)만큼으로 다시 잡는다. 글이 바뀔 때마다 실행.
@@ -114,6 +115,7 @@ function AddEntryForm({ domains, initial, onSubmit, onReset, onClose }) {
     // 저장은 "Add / Save" 버튼으로만 한다. 여러 줄 칸(textarea)의 Enter는 줄바꿈이라 그대로 둔다.
     function handleKeyDown(event) {
         if (event.key === "Enter" && event.target.tagName === "INPUT") event.preventDefault();
+        if (event.key === "Escape") setDomainOpen(false);
     }
 
     function handleSubmit(event) {
@@ -151,6 +153,15 @@ function AddEntryForm({ domains, initial, onSubmit, onReset, onClose }) {
     const pickable = domains.filter((d) => d.value !== "all");
     // 지금 적은 분야가 목록에 없는 새 분야인지 (안내 문장용)
     const typedDomain = normalizeDomain(form.domain);
+    // 목록에 보여 줄 분야: 적은 글자가 들어 있는 것만. 이미 정확히 고른 상태면 전부 다시 보여 준다(다른 걸로 바꾸기 쉽게)
+    const exact = pickable.some((d) => d.value === typedDomain);
+    const matching = typedDomain === "" || exact ? pickable : pickable.filter((d) => d.value.includes(typedDomain));
+
+    function pickDomain(value) {
+        setForm((previous) => ({ ...previous, domain: value }));
+        setDomainOpen(false);
+    }
+
     const isNewDomain = typedDomain !== "" && typedDomain !== "all" && !pickable.some((d) => d.value === typedDomain);
     const canAddImage = images.length < MAX_IMAGES;
 
@@ -164,24 +175,47 @@ function AddEntryForm({ domains, initial, onSubmit, onReset, onClose }) {
             </div>
 
             <div className="add-grid">
-                <label className="field">
-                    <span>Domain — 고르거나 새로 적기</span>
-                    {/* input + datalist: 목록에서 고를 수도 있고, 없는 분야를 직접 적을 수도 있다 */}
-                    <input
-                        name="domain"
-                        list="domain-options"
-                        value={form.domain}
-                        onChange={handleChange}
-                        placeholder="film, music, … 또는 새 분야"
-                        autoComplete="off"
-                    />
-                    <datalist id="domain-options">
-                        {pickable.map((d) => (
-                            <option key={d.value} value={d.value} />
-                        ))}
-                    </datalist>
+                <div className="field">
+                    <label htmlFor="entry-domain">Domain — 고르거나 새로 적기</label>
+                    {/* 고를 수도 있고 직접 적을 수도 있는 칸. 브라우저 기본 목록(datalist)은 모양을 바꿀 수 없어서
+                        목록을 직접 그린다: 칸에 들어오면 열리고, 적는 글자로 걸러지고, 항목을 누르면 그 값이 들어간다. */}
+                    <div className="combo">
+                        <input
+                            id="entry-domain"
+                            name="domain"
+                            value={form.domain}
+                            onChange={(event) => {
+                                handleChange(event);
+                                setDomainOpen(true);
+                            }}
+                            onFocus={() => setDomainOpen(true)}
+                            onBlur={() => setDomainOpen(false)}
+                            placeholder="film, music, … 또는 새 분야"
+                            autoComplete="off"
+                            role="combobox"
+                            aria-expanded={domainOpen && matching.length > 0}
+                            aria-controls="domain-options"
+                        />
+                        {domainOpen && matching.length > 0 && (
+                            <ul id="domain-options" className="combo-list" role="listbox">
+                                {matching.map((d) => (
+                                    <li key={d.value} role="option" aria-selected={d.value === typedDomain}>
+                                        {/* onMouseDown을 막아야 누르는 순간 칸의 포커스가 풀려 목록이 먼저 닫히지 않는다 */}
+                                        <button
+                                            type="button"
+                                            tabIndex={-1}
+                                            onMouseDown={(event) => event.preventDefault()}
+                                            onClick={() => pickDomain(d.value)}
+                                        >
+                                            {d.label}
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
                     {isNewDomain && <span className="field-hint">새 분야 "{typedDomain}" — 저장하면 필터에 추가돼요</span>}
-                </label>
+                </div>
                 <label className="field">
                     <span>Captured</span>
                     <input name="captured" value={form.captured} onChange={handleChange} placeholder="2026.11.26" />
