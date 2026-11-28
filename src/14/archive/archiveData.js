@@ -14,7 +14,7 @@ import sa005a from "./images/SA-005_01.jpg";
 import sa005b from "./images/SA-005_02.jpg";
 import sa005c from "./images/SA-005_03.jpg";
 import sa006a from "./images/SA-006_06.jpg";
-import sa006b from "./images/SA-006_08.jpg";
+import sa006b from "./images/SA-006_10.jpg";
 import sa006c from "./images/SA-006_09.jpg";
 import sa007a from "./images/SA-007_01.jpg";
 import sa007b from "./images/SA-007_02.jpg";

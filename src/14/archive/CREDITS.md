@@ -14,7 +14,7 @@
 | SA-003 | Gucci 2027 SS (The Store Show) | Gucci · 사진 Launchmetrics Spotlight (FASHIONSNAP) | [FASHIONSNAP](https://www.fashionsnap.com/collection/gucci/2027ss/) | 권리 미확인 | SA-003_01~03 |
 | SA-004 | [가제] 오려 붙인 동화 | etre.valori | [Instagram](https://www.instagram.com/reel/Dfm6-JGRZEY/) | 권리 미확인 | SA-004_0007, 0022 |
 | SA-005 | 수학 공식 회화 | Hamid Naderi Yeganeh · 큐레이션 음미 매거진 | [Instagram](https://www.instagram.com/hamidnaderiyeganeh/) | 권리 미확인 | SA-005_01~03 |
-| SA-006 | THREAD — Threading Through Communities | Seiko Kinoshita · 기록 필름 Daniella Sasaki | [Derwent Valley Mills](https://www.derwentvalleymills.org/discover/arts/major-arts-commission-thread-by-seiko-kinoshita/) | 권리 미확인 | SA-006_06, 08, 09 (03, 07은 2026-11-27에 교체되어 쓰지 않음) |
+| SA-006 | THREAD — Threading Through Communities | Seiko Kinoshita · 기록 필름 Daniella Sasaki | [Derwent Valley Mills](https://www.derwentvalleymills.org/discover/arts/major-arts-commission-thread-by-seiko-kinoshita/) | 권리 미확인 | SA-006_06, 09, 10 (03, 07은 2026-11-27에 교체되어 쓰지 않음. 번호는 Drive frames 기준, 2026-11-28 08→10) |
 | SA-007 | Forever is Composed of Nows | Sarah Sze · SFMOMA (설치 전경 photo: Matthew Millman, courtesy Sarah Sze Studio) | [SFMOMA](https://www.sfmoma.org/exhibition/sarah-sze/) | 권리 미확인 (전시 페이지·인터뷰 영상 캡처) | SA-007_01~06, 0104, 0148 |
 | SA-008 | Unending Pt. 1 | 음악 Asta Hiroki · 영상 Joe Wretham | [AWN](https://www.awn.com/news/awn-exclusive-asta-hirokis-unending-pt-1-music-video-premiere) | 권리 미확인 | SA-008_01~09 |
 | SA-009 | 빛의 왕국 | Momo Yamanishi · 72Gallery, Tokyo Institute of Photography | [TIP](https://tip.or.jp/2024/5718) | 권리 미확인 | SA-009_01 |
